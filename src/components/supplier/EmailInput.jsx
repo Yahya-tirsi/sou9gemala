@@ -1,0 +1,150 @@
+import React, { useState } from "react";
+// import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
+import {
+  Box,
+  Button,
+  Container,
+  TextField,
+  Typography,
+  CircularProgress,
+  Stack,
+} from "@mui/material";
+import { orange } from "@mui/material/colors";
+// import { checkEmailExists } from "../../features/supplier/supplierSlice";
+
+const EmailInput = ({ email: propEmail = "", onVerified, onBack }) => {
+  const { t, i18n } = useTranslation();
+  const [email, setEmail] = useState(propEmail);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  // const dispatch = useDispatch();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError("");
+
+    try {
+      // const result = await dispatch(checkEmailExists(email)).unwrap();
+      onVerified({ email });
+
+      // if (result.exists) {
+      //   setError(t("register.emailAlreadyExists"));
+      // } else {
+      //   onVerified({ email });
+      // }
+    } catch (err) {
+      setError(err.message || t("register.emailCheckError"));
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <Container maxWidth="sm" sx={{ py: 4 }}>
+      <Box
+        sx={{
+          bgcolor: "background.paper",
+          p: 4,
+          borderRadius: 2,
+          boxShadow: 1,
+        }}
+      >
+        <Typography
+          variant="h5"
+          component="h2"
+          gutterBottom
+          sx={{ color: orange[700] }}
+        >
+          {t("register.configureAccount")}
+        </Typography>
+
+        <Typography paragraph>{t("register.enterEmailToCreate")}</Typography>
+
+        <Box component="form" onSubmit={handleSubmit}>
+          <TextField
+            fullWidth
+            label={`${t("register.emailAddress")} *`}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            variant="outlined"
+            sx={{ mb: 3 }}
+            required
+            type="email"
+            error={!!error}
+            helperText={error}
+            inputProps={{
+              "data-testid": "email-input",
+            }}
+          />
+
+          <Box sx={{ display: "flex", gap: 2 }}>
+            {onBack && (
+              <Button variant="outlined" onClick={onBack} sx={{ flex: 1 }}>
+                {t("common.back")}
+              </Button>
+            )}
+
+            <Button
+              type="submit"
+              variant="contained"
+              disabled={isLoading}
+              sx={{
+                flex: 1,
+                py: 1.5,
+                bgcolor: orange[700],
+                "&:hover": { bgcolor: orange[800] },
+              }}
+            >
+              {isLoading ? (
+                <CircularProgress size={24} color="inherit" />
+              ) : (
+                t("common.signIn")
+              )}
+            </Button>
+          </Box>
+        </Box>
+
+        {/* Language Selector */}
+        <Stack direction="row" spacing={2} justifyContent="center" mt={2}>
+          <Button
+            size="small"
+            onClick={() => i18n.changeLanguage("fr")}
+            color={i18n.language === "fr" ? "primary" : "inherit"}
+            sx={{
+              fontWeight: i18n.language === "fr" ? "bold" : "normal",
+              color: i18n.language === "fr" ? orange[700] : "inherit",
+            }}
+          >
+            Français
+          </Button>
+          <Button
+            size="small"
+            onClick={() => i18n.changeLanguage("ar")}
+            color={i18n.language === "ar" ? "primary" : "inherit"}
+            sx={{
+              fontWeight: i18n.language === "ar" ? "bold" : "normal",
+              color: i18n.language === "ar" ? orange[700] : "inherit",
+            }}
+          >
+            العربية
+          </Button>
+          <Button
+            size="small"
+            onClick={() => i18n.changeLanguage("en")}
+            color={i18n.language === "en" ? "primary" : "inherit"}
+            sx={{
+              fontWeight: i18n.language === "en" ? "bold" : "normal",
+              color: i18n.language === "en" ? orange[700] : "inherit",
+            }}
+          >
+            English
+          </Button>
+        </Stack>
+      </Box>
+    </Container>
+  );
+};
+
+export default EmailInput;

@@ -1,0 +1,140 @@
+import { useState } from "react";
+// import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
+import {
+  Box,
+  Button,
+  Container,
+  TextField,
+  Typography,
+  Link,
+  Divider,
+  Stack,
+} from "@mui/material";
+import { orange } from "@mui/material/colors";
+
+const BasicInfo = ({ onNext }) => {
+  const { t, i18n } = useTranslation();
+  // const dispatch = useDispatch();
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onNext(formData);
+  };
+
+  return (
+    <Container maxWidth="sm" sx={{ py: 4 }}>
+      <Box
+        component="form"
+        onSubmit={handleSubmit}
+        sx={{
+          bgcolor: "background.paper",
+          p: 4,
+          borderRadius: 2,
+          boxShadow: 1,
+        }}
+      >
+        <Typography
+          variant="h4"
+          component="h1"
+          gutterBottom
+          sx={{
+            color: orange[700],
+            fontWeight: "bold",
+          }}
+        >
+          {t("register.sellOnJumia")}
+        </Typography>
+
+        <Typography variant="body1" paragraph>
+          {t("register.createSupplierAccount")}
+        </Typography>
+
+        <Stack spacing={3}>
+          <TextField
+            required
+            fullWidth
+            name="firstName"
+            label={t("register.firstName")}
+            value={formData.firstName}
+            onChange={handleChange}
+            variant="outlined"
+          />
+
+          <TextField
+            required
+            fullWidth
+            name="lastName"
+            label={t("register.lastName")}
+            value={formData.lastName}
+            onChange={handleChange}
+            variant="outlined"
+          />
+        </Stack>
+
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          sx={{
+            mt: 4,
+            py: 1.5,
+            bgcolor: orange[700],
+            "&:hover": {
+              bgcolor: orange[800],
+            },
+          }}
+        >
+          {t("common.next")}
+        </Button>
+
+        <Divider sx={{ my: 3 }} />
+
+        <Typography variant="body2" textAlign="center">
+          {t("register.alreadyHaveAccount")}{" "}
+          <Link href="/login" color={orange[700]}>
+            {t("common.signIn")}
+          </Link>
+        </Typography>
+
+        {/* Language selector */}
+        <Stack direction="row" spacing={2} justifyContent="center" mt={2}>
+          <Button
+            size="small"
+            onClick={() => i18n.changeLanguage("fr")}
+            color={i18n.language === "fr" ? "primary" : "inherit"}
+          >
+            Français
+          </Button>
+          <Button
+            size="small"
+            onClick={() => i18n.changeLanguage("ar")}
+            color={i18n.language === "ar" ? "primary" : "inherit"}
+          >
+            العربية
+          </Button>
+          <Button
+            size="small"
+            onClick={() => i18n.changeLanguage("en")}
+            color={i18n.language === "en" ? "primary" : "inherit"}
+          >
+            English
+          </Button>
+        </Stack>
+      </Box>
+    </Container>
+  );
+};
+
+export default BasicInfo;
