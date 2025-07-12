@@ -16,43 +16,10 @@ const initialState = {
 // Register supplier (multi-step process)
 export const registerSupplier = createAsyncThunk(
   "supplier/register",
-  async (registrationData, thunkAPI) => {
+  async (supplierData, thunkAPI) => {
     try {
-      const { currentStep } = thunkAPI.getState().supplier;
-
-      // Handle different steps
-      switch (currentStep) {
-        case 1: // Basic info
-          return { step: 1, data: registrationData };
-
-        case 2: {
-          // Email verification
-          await supplierService.sendVerificationCode(registrationData.email);
-          return { step: 2, email: registrationData.email };
-        }
-
-        case 3: {
-          // Verify code
-          const response = await supplierService.verifyEmail(
-            registrationData.email,
-            registrationData.code
-          );
-          return { step: 3, ...response };
-        }
-
-        case 4: {
-          // Final submission
-          const completeData = {
-            ...thunkAPI.getState().supplier.registrationData,
-            ...registrationData,
-          };
-          const supplier = await supplierService.register(completeData);
-          return { step: 4, supplier };
-        }
-
-        default:
-          throw new Error("Invalid registration step");
-      }
+      const response = await supplierService.register(supplierData);
+      return response; // This should include the created supplier data
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -73,7 +40,7 @@ export const sendVerificationCode = createAsyncThunk(
 );
 
 export const checkEmailExists = createAsyncThunk(
-  'supplier/checkEmailExists',
+  "supplier/checkEmailExists",
   async (email, { rejectWithValue }) => {
     try {
       const response = await supplierService.checkEmailExists(email);

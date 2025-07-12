@@ -3,7 +3,7 @@ import supplierApi from "../../api/supplierApi";
 const register = async (supplierData) => {
   try {
     const response = await supplierApi.register(supplierData);
-    return response;
+    return response.data;
   } catch (error) {
     throw new Error(error.message || "Failed to register supplier");
   }

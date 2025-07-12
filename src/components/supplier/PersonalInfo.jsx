@@ -1,84 +1,265 @@
-import { useState } from "react";
-// import { useDispatch } from "react-redux";
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
+import {
+  Box,
+  Button,
+  Container,
+  TextField,
+  Typography,
+  Stack,
+  Alert,
+  InputAdornment,
+  IconButton,
+  Link,
+  Divider,
+} from "@mui/material";
+import { orange } from "@mui/material/colors";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const PersonalInfo = ({ onNext }) => {
+  const { t, i18n } = useTranslation();
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-//   const dispatch = useDispatch();
+  const [error, setError] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [success] = useState("E-mail vérifié avec succès");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      alert("Les mots de passe ne correspondent pas");
+      setError(t("personalInfo.passwordsNotMatch"));
       return;
     }
-    onNext({ phone, password });
+    if (password.length < 8) {
+      setError(t("personalInfo.passwordLength"));
+      return;
+    }
+    setError(null);
+    onNext({ phone: `+212${phone}`, password });
   };
 
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleClickShowConfirmPassword = () =>
+    setShowConfirmPassword(!showConfirmPassword);
+
   return (
-    <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h1 className="text-xl font-semibold mb-4">Informations personnelles</h1>
-      <p className="mb-4">
-        Configurez votre mot de passe et fournissez votre numéro de téléphone
-      </p>
+    <Container maxWidth="sm" sx={{ py: 4 }}>
+      <Box
+        sx={{
+          bgcolor: "background.paper",
+          p: 4,
+          borderRadius: 2,
+          boxShadow: 1,
+        }}
+      >
+        <Typography
+          variant="h5"
+          component="h1"
+          gutterBottom
+          sx={{ color: orange[700] }}
+        >
+          {t("personalInfo.title")}
+        </Typography>
+        <Typography paragraph>{t("personalInfo.subtitle")}</Typography>
 
-      <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label className="block text-gray-700 mb-2">
-            Numéro de téléphone *
-          </label>
-          <div className="flex">
-            <select className="p-2 border border-gray-300 rounded-l bg-gray-100">
-              <option>+212</option>
-              {/* Add other country codes as needed */}
-            </select>
-            <input
-              type="tel"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className="flex-1 p-2 border border-gray-300 rounded-r"
-              required
-            />
-          </div>
-        </div>
+        {success && (
+          <Alert severity="success" sx={{ mb: 3 }}>
+            {success}
+          </Alert>
+        )}
+        {error && (
+          <Alert severity="error" sx={{ mb: 3 }}>
+            {error}
+          </Alert>
+        )}
 
-        <div className="mb-4">
-          <label className="block text-gray-700 mb-2">Mot de passe *</label>
-          <input
-            type="password"
+        <Box component="form" onSubmit={handleSubmit}>
+          <TextField
+            fullWidth
+            label={t("personalInfo.phoneLabel")}
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            required
+            sx={{
+              mb: 3,
+              "& .MuiOutlinedInput-root": {
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: orange[700],
+                  borderWidth: "2px",
+                },
+                "&:hover .MuiOutlinedInput-notchedOutline": {
+                  borderColor: orange[500],
+                },
+              },
+              "& .MuiInputLabel-root": {
+                "&.Mui-focused": {
+                  color: orange[700],
+                },
+              },
+            }}
+            InputLabelProps={{
+              sx: {
+                "&.Mui-focused": {
+                  color: orange[700],
+                },
+              },
+            }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">+212</InputAdornment>
+              ),
+            }}
+          />
+
+          <TextField
+            fullWidth
+            label={t("personalInfo.passwordLabel")}
+            type={showPassword ? "text" : "password"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded"
             required
+            sx={{
+              mb: 2,
+              "& .MuiOutlinedInput-root": {
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: orange[700],
+                  borderWidth: "2px",
+                },
+                "&:hover .MuiOutlinedInput-notchedOutline": {
+                  borderColor: orange[500],
+                },
+              },
+              "& .MuiInputLabel-root": {
+                "&.Mui-focused": {
+                  color: orange[700],
+                },
+              },
+            }}
+            InputLabelProps={{
+              sx: {
+                "&.Mui-focused": {
+                  color: orange[700],
+                },
+              },
+            }}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={handleClickShowPassword} edge="end">
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
-        </div>
 
-        <div className="mb-6">
-          <label className="block text-gray-700 mb-2">
-            Confirmez le mot de passe *
-          </label>
-          <input
-            type="password"
+          <TextField
+            fullWidth
+            label={t("personalInfo.confirmPasswordLabel")}
+            type={showConfirmPassword ? "text" : "password"}
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded"
             required
+            sx={{
+              mb: 2,
+              "& .MuiOutlinedInput-root": {
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: orange[700],
+                  borderWidth: "2px",
+                },
+                "&:hover .MuiOutlinedInput-notchedOutline": {
+                  borderColor: orange[500],
+                },
+              },
+              "& .MuiInputLabel-root": {
+                "&.Mui-focused": {
+                  color: orange[700],
+                },
+              },
+            }}
+            InputLabelProps={{
+              sx: {
+                "&.Mui-focused": {
+                  color: orange[700],
+                },
+              },
+            }}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={handleClickShowConfirmPassword}
+                    edge="end"
+                  >
+                    {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
-          <p className="text-sm text-gray-600 mt-1">
-            Le mot de passe doit contenir au moins 8 caractères contenant une
-            majuscule, une lettre inférieure, un nombre et un caractère spécial.
-          </p>
-        </div>
 
-        <button
-          type="submit"
-          className="w-full bg-orange-500 text-white py-2 px-4 rounded hover:bg-orange-600"
-        >
-          SUIVANT
-        </button>
-      </form>
-    </div>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+            {t("personalInfo.passwordRequirements")}
+          </Typography>
+
+          <Divider sx={{ my: 2 }} />
+
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{
+              py: 1.5,
+              bgcolor: orange[700],
+              "&:hover": {
+                bgcolor: orange[800],
+              },
+            }}
+          >
+            {t("common.next")}
+          </Button>
+        </Box>
+
+        {/* Language Selector */}
+        <Stack direction="row" spacing={2} justifyContent="center" mt={2}>
+          <Button
+            size="small"
+            onClick={() => i18n.changeLanguage("fr")}
+            color={i18n.language === "fr" ? "primary" : "inherit"}
+            sx={{
+              fontWeight: i18n.language === "fr" ? "bold" : "normal",
+              color: i18n.language === "fr" ? orange[700] : "inherit",
+            }}
+          >
+            Français
+          </Button>
+          <Button
+            size="small"
+            onClick={() => i18n.changeLanguage("ar")}
+            color={i18n.language === "ar" ? "primary" : "inherit"}
+            sx={{
+              fontWeight: i18n.language === "ar" ? "bold" : "normal",
+              color: i18n.language === "ar" ? orange[700] : "inherit",
+            }}
+          >
+            العربية
+          </Button>
+          <Button
+            size="small"
+            onClick={() => i18n.changeLanguage("en")}
+            color={i18n.language === "en" ? "primary" : "inherit"}
+            sx={{
+              fontWeight: i18n.language === "en" ? "bold" : "normal",
+              color: i18n.language === "en" ? orange[700] : "inherit",
+            }}
+          >
+            English
+          </Button>
+        </Stack>
+      </Box>
+    </Container>
   );
 };
 

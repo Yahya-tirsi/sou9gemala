@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { useTranslation } from 'react-i18next';
-import { 
+import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
+import {
   Box,
   Button,
   Container,
@@ -9,14 +9,14 @@ import {
   Typography,
   CircularProgress,
   Stack,
-  Alert
-} from '@mui/material';
-import { orange } from '@mui/material/colors';
-import {  sendVerificationCode } from '../../features/supplier/supplierSlice';
+  Alert,
+} from "@mui/material";
+import { orange } from "@mui/material/colors";
+import { sendVerificationCode } from "../../features/supplier/supplierSlice";
 
 const VerificationEmailCode = ({ email, onVerificationComplete }) => {
   const { t, i18n } = useTranslation();
-  const [code, setCode] = useState('');
+  const [code, setCode] = useState("");
   const [countdown, setCountdown] = useState(60);
   const [isLoading, setIsLoading] = useState(false);
   const [resendLoading, setResendLoading] = useState(false);
@@ -27,12 +27,12 @@ const VerificationEmailCode = ({ email, onVerificationComplete }) => {
   useEffect(() => {
     // Send verification code when component mounts
     handleSendVerificationCode();
-    
+
     // Start countdown
     const timer = setInterval(() => {
-      setCountdown(prev => (prev > 0 ? prev - 1 : 0));
+      setCountdown((prev) => (prev > 0 ? prev - 1 : 0));
     }, 1000);
-    
+
     return () => clearInterval(timer);
   }, [email, dispatch]);
 
@@ -40,10 +40,10 @@ const VerificationEmailCode = ({ email, onVerificationComplete }) => {
     setResendLoading(true);
     try {
       await dispatch(sendVerificationCode(email)).unwrap();
-      setSuccess(t('register.codeSentSuccessfully'));
+      setSuccess(t("register.codeSentSuccessfully"));
       setError(null);
     } catch {
-      setError(t('register.codeSendingFailed'));
+      setError(t("register.codeSendingFailed"));
       setSuccess(null);
     } finally {
       setResendLoading(false);
@@ -55,13 +55,13 @@ const VerificationEmailCode = ({ email, onVerificationComplete }) => {
     setIsLoading(true);
     setError(null);
     setSuccess(null);
-    
+
     try {
       // await dispatch(verifyEmail({ email, code })).unwrap();
-      setSuccess(t('register.verificationSuccessful'));
+      setSuccess(t("register.verificationSuccessful"));
       onVerificationComplete();
     } catch {
-      setError(t('register.verificationFailed'));
+      setError(t("register.verificationFailed"));
     } finally {
       setIsLoading(false);
     }
@@ -74,25 +74,68 @@ const VerificationEmailCode = ({ email, onVerificationComplete }) => {
 
   return (
     <Container maxWidth="sm" sx={{ py: 4 }}>
-      <Box sx={{ bgcolor: 'background.paper', p: 4, borderRadius: 2, boxShadow: 1 }}>
-        <Typography variant="h5" component="h2" gutterBottom sx={{ color: orange[700] }}>
-          {t('register.verifyYourEmail')}
-        </Typography>
-        
-        <Typography paragraph>
-          {t('register.codeSentTo')} <strong>{email}</strong>
+      <Box
+        sx={{
+          bgcolor: "background.paper",
+          p: 4,
+          borderRadius: 2,
+          boxShadow: 1,
+        }}
+      >
+        <Typography
+          variant="h5"
+          component="h2"
+          gutterBottom
+          sx={{ color: orange[700] }}
+        >
+          {t("register.verifyYourEmail")}
         </Typography>
 
-        {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
-        {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
+        <Typography paragraph>
+          {t("register.codeSentTo")} <strong>{email}</strong>
+        </Typography>
+
+        {error && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {error}
+          </Alert>
+        )}
+        {success && (
+          <Alert severity="success" sx={{ mb: 2 }}>
+            {success}
+          </Alert>
+        )}
 
         <Box component="form" onSubmit={handleSubmit}>
           <TextField
             fullWidth
-            label={t('register.email')}
+            label={t("register.email")}
             value={email}
             variant="outlined"
-            sx={{ mb: 2 }}
+            sx={{
+              mb: 2,
+              "& .MuiOutlinedInput-root": {
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: orange[700],
+                  borderWidth: "2px",
+                },
+                "&:hover .MuiOutlinedInput-notchedOutline": {
+                  borderColor: orange[500],
+                },
+              },
+              "& .MuiInputLabel-root": {
+                "&.Mui-focused": {
+                  color: orange[700],
+                },
+              },
+            }}
+            InputLabelProps={{
+              sx: {
+                "&.Mui-focused": {
+                  color: orange[700],
+                },
+              },
+            }}
             InputProps={{
               readOnly: true,
             }}
@@ -100,11 +143,34 @@ const VerificationEmailCode = ({ email, onVerificationComplete }) => {
 
           <TextField
             fullWidth
-            label={t('register.verificationCode')}
+            label={t("register.verificationCode")}
             value={code}
             onChange={(e) => setCode(e.target.value)}
             variant="outlined"
-            sx={{ mb: 3 }}
+            sx={{
+              mb: 3,
+              "& .MuiOutlinedInput-root": {
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: orange[700],
+                  borderWidth: "2px",
+                },
+                "&:hover .MuiOutlinedInput-notchedOutline": {
+                  borderColor: orange[500],
+                },
+              },
+              "& .MuiInputLabel-root": {
+                "&.Mui-focused": {
+                  color: orange[700],
+                },
+              },
+            }}
+            InputLabelProps={{
+              sx: {
+                "&.Mui-focused": {
+                  color: orange[700],
+                },
+              },
+            }}
             required
           />
 
@@ -116,12 +182,16 @@ const VerificationEmailCode = ({ email, onVerificationComplete }) => {
             sx={{
               py: 1.5,
               bgcolor: orange[700],
-              '&:hover': {
-                bgcolor: orange[800]
-              }
+              "&:hover": {
+                bgcolor: orange[800],
+              },
             }}
           >
-            {isLoading ? <CircularProgress size={24} color="inherit" /> : t('common.verify')}
+            {isLoading ? (
+              <CircularProgress size={24} color="inherit" />
+            ) : (
+              t("common.verify")
+            )}
           </Button>
         </Box>
 
@@ -131,15 +201,15 @@ const VerificationEmailCode = ({ email, onVerificationComplete }) => {
           disabled={countdown > 0 || resendLoading}
           sx={{
             mt: 2,
-            color: countdown > 0 ? 'text.disabled' : orange[700],
-            textTransform: 'none'
+            color: countdown > 0 ? "text.disabled" : orange[700],
+            textTransform: "none",
           }}
         >
           {resendLoading ? (
             <CircularProgress size={24} color="inherit" />
           ) : (
             <>
-              {t('register.resendCode')} {countdown > 0 && `(${countdown}s)`}
+              {t("register.resendCode")} {countdown > 0 && `(${countdown}s)`}
             </>
           )}
         </Button>

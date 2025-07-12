@@ -69,7 +69,30 @@ const EmailInput = ({ email: propEmail = "", onVerified, onBack }) => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             variant="outlined"
-            sx={{ mb: 3 }}
+            sx={{
+              mb: 3,
+              "& .MuiOutlinedInput-root": {
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: orange[700],
+                  borderWidth: "2px",
+                },
+                "&:hover .MuiOutlinedInput-notchedOutline": {
+                  borderColor: orange[500],
+                },
+              },
+              "& .MuiInputLabel-root": {
+                "&.Mui-focused": {
+                  color: orange[700],
+                },
+              },
+            }}
+            InputLabelProps={{
+              sx: {
+                "&.Mui-focused": {
+                  color: orange[700],
+                },
+              },
+            }}
             required
             type="email"
             error={!!error}

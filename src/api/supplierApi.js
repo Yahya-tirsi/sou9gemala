@@ -9,6 +9,7 @@ const handleResponse = async (response) => {
 };
 
 const supplierApi = {
+  
   // Register supplier
   register: async (supplierData) => {
     try {
@@ -19,6 +20,8 @@ const supplierApi = {
         },
         body: JSON.stringify(supplierData),
       });
+      console.log(supplierData);
+      
       return await handleResponse(response);
     } catch (error) {
       throw new Error(error.message || "Failed to register supplier");

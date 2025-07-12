@@ -4,8 +4,10 @@
     "email": "Email Address",
     "codeSendingFailed": "Failed to send verification code",
     "verificationFailed": "Verification failed, please check the code",
-    "sellOnJumia": "Sell on Jumia",
+    "sellOnJumia": "Sell on SouqJemla",
     "createSupplierAccount": "Create your seller account",
+    "storeYears": "7 years of experience",
+    "storeNameDescription": "This is the store name displayed to customers",
     "firstName": "First name",
     "lastName": "Last name",
     "alreadyHaveAccount": "Already have an account?",
@@ -30,7 +32,7 @@
     "individualDescription": "If you are a seller without a registered or incorporated company.",
     "business": "Business",
     "businessDescription": "If you are a registered or incorporated company with acceptable documents.",
-    "heardAbout": "How did you hear about Jumia?",
+    "heardAbout": "How did you hear about SouqJemla?",
     "heardAboutOptions": {
       "friend": "Friend",
       "social": "Social media",
@@ -38,11 +40,11 @@
       "other": "Other"
     },
     "agreeToTerms1": "I hereby confirm that I have read and accept the",
-    "agreeToTerms2": "Jumia Seller Agreement",
-    "agreeToTerms3": ", Codes, policies and guidelines of Jumia",
+    "agreeToTerms2": "SouqJemla Seller Agreement",
+    "agreeToTerms3": ", Codes, policies and guidelines of SouqJemla",
     "acceptTermsError": "Please accept the terms and conditions",
     "successTitle": "Registration successful!",
-    "successMessage": "Your seller account has been created successfully. You can now start selling on Jumia."
+    "successMessage": "Your seller account has been successfully created. You can now start selling on SouqJemla. Our team will be in touch shortly - please keep your phone available for our verification call."
   },
   "common": {
     "next": "NEXT",
@@ -52,5 +54,17 @@
     "signIn": "Sign In",
     "close": "Close",
     "contactUs": "Contact Us"
+  },
+  "personalInfo": {
+    "title": "Personal Information",
+    "subtitle": "Set up your password and provide your phone number",
+    "phoneLabel": "Phone Number",
+    "passwordLabel": "Password",
+    "confirmPasswordLabel": "Confirm Password",
+    "nextButton": "NEXT",
+    "forgotPassword": "Forgot Password?",
+    "passwordsNotMatch": "Passwords do not match",
+    "passwordLength": "Password must contain at least 8 characters",
+    "passwordRequirements": "Password must contain at least 8 characters including one uppercase letter, one lowercase letter, one number and one special character."
   }
 }

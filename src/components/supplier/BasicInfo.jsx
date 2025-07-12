@@ -68,6 +68,29 @@ const BasicInfo = ({ onNext }) => {
             name="firstName"
             label={t("register.firstName")}
             value={formData.firstName}
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: orange[700],
+                  borderWidth: "2px",
+                },
+                "&:hover .MuiOutlinedInput-notchedOutline": {
+                  borderColor: orange[500],
+                },
+              },
+              "& .MuiInputLabel-root": {
+                "&.Mui-focused": {
+                  color: orange[700],
+                },
+              },
+            }}
+            InputLabelProps={{
+              sx: {
+                "&.Mui-focused": {
+                  color: orange[700],
+                },
+              },
+            }}
             onChange={handleChange}
             variant="outlined"
           />
@@ -78,6 +101,29 @@ const BasicInfo = ({ onNext }) => {
             name="lastName"
             label={t("register.lastName")}
             value={formData.lastName}
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: orange[700],
+                  borderWidth: "2px",
+                },
+                "&:hover .MuiOutlinedInput-notchedOutline": {
+                  borderColor: orange[500],
+                },
+              },
+              "& .MuiInputLabel-root": {
+                "&.Mui-focused": {
+                  color: orange[700],
+                },
+              },
+            }}
+            InputLabelProps={{
+              sx: {
+                "&.Mui-focused": {
+                  color: orange[700],
+                },
+              },
+            }}
             onChange={handleChange}
             variant="outlined"
           />
