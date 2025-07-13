@@ -12,8 +12,10 @@ import {
   IconButton,
   Link,
   Divider,
+  Grid,
 } from "@mui/material";
 import { orange } from "@mui/material/colors";
+import SharedLayout from "../../shared/SharedLayout";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const PersonalInfo = ({ onNext }) => {
@@ -45,221 +47,283 @@ const PersonalInfo = ({ onNext }) => {
     setShowConfirmPassword(!showConfirmPassword);
 
   return (
-    <Container maxWidth="sm" sx={{ py: 4 }}>
-      <Box
+    <Grid container sx={{ minHeight: "100vh" }}>
+      {/* Left side - placeholder for images/info */}
+      <Grid
+        item
+        xs={12}
+        md={7}
         sx={{
-          bgcolor: "background.paper",
-          p: 4,
-          borderRadius: 2,
-          boxShadow: 1,
+          background: "linear-gradient(135deg, #FFA726, #FB8C00)",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh", // Prend toute la hauteur
         }}
       >
-        <Typography
-          variant="h5"
-          component="h1"
-          gutterBottom
-          sx={{ color: orange[700] }}
+        <Box sx={{ p: 4, textAlign: "center" }}>
+          <Typography variant="h3" gutterBottom>
+            Welcome to Our Platform
+          </Typography>
+          <Typography variant="body1">
+            Join thousands of happy suppliers growing their business with us
+          </Typography>
+        </Box>
+      </Grid>
+
+      <Grid
+        item
+        xs={12}
+        md={5}
+        sx={{
+          display: "flex",
+          justifyContent: "flex-start", // décalage vers la droite
+          marginLeft: { xs: "0", md: "3.5rem" },
+          alignItems: "center",
+          px: { xs: 2, md: 6 }, // plus d’espace à droite sur desktop
+          backgroundColor: "background.default",
+        }}
+      >
+        <Container
+          maxWidth="sm"
+          sx={{
+            bgcolor: "background.paper",
+            p: 4,
+            borderRadius: 2,
+            width: "100%",
+          }}
         >
-          {t("personalInfo.title")}
-        </Typography>
-        <Typography paragraph>{t("personalInfo.subtitle")}</Typography>
+          <SharedLayout activeStep={3} />
 
-        {success && (
-          <Alert severity="success" sx={{ mb: 3 }}>
-            {success}
-          </Alert>
-        )}
-        {error && (
-          <Alert severity="error" sx={{ mb: 3 }}>
-            {error}
-          </Alert>
-        )}
-
-        <Box component="form" onSubmit={handleSubmit}>
-          <TextField
-            fullWidth
-            label={t("personalInfo.phoneLabel")}
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            required
+          <Typography
+            gutterBottom
             sx={{
-              mb: 3,
-              "& .MuiOutlinedInput-root": {
-                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  borderColor: orange[700],
-                  borderWidth: "2px",
-                },
-                "&:hover .MuiOutlinedInput-notchedOutline": {
-                  borderColor: orange[500],
-                },
-              },
-              "& .MuiInputLabel-root": {
-                "&.Mui-focused": {
-                  color: orange[700],
-                },
-              },
+              fontSize: "24px",
+              fontWeight: "bold",
+              textAlign: "center",
             }}
-            InputLabelProps={{
-              sx: {
-                "&.Mui-focused": {
-                  color: orange[700],
-                },
-              },
-            }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">+212</InputAdornment>
-              ),
-            }}
-          />
-
-          <TextField
-            fullWidth
-            label={t("personalInfo.passwordLabel")}
-            type={showPassword ? "text" : "password"}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
+          >
+            {t("personalInfo.title")}
+          </Typography>
+          <Typography
             sx={{
-              mb: 2,
-              "& .MuiOutlinedInput-root": {
-                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  borderColor: orange[700],
-                  borderWidth: "2px",
-                },
-                "&:hover .MuiOutlinedInput-notchedOutline": {
-                  borderColor: orange[500],
-                },
-              },
-              "& .MuiInputLabel-root": {
-                "&.Mui-focused": {
-                  color: orange[700],
-                },
-              },
+              color: "gray",
+              textAlign: "center",
             }}
-            InputLabelProps={{
-              sx: {
-                "&.Mui-focused": {
-                  color: orange[700],
-                },
-              },
-            }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton onClick={handleClickShowPassword} edge="end">
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
-
-          <TextField
-            fullWidth
-            label={t("personalInfo.confirmPasswordLabel")}
-            type={showConfirmPassword ? "text" : "password"}
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-            sx={{
-              mb: 2,
-              "& .MuiOutlinedInput-root": {
-                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  borderColor: orange[700],
-                  borderWidth: "2px",
-                },
-                "&:hover .MuiOutlinedInput-notchedOutline": {
-                  borderColor: orange[500],
-                },
-              },
-              "& .MuiInputLabel-root": {
-                "&.Mui-focused": {
-                  color: orange[700],
-                },
-              },
-            }}
-            InputLabelProps={{
-              sx: {
-                "&.Mui-focused": {
-                  color: orange[700],
-                },
-              },
-            }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={handleClickShowConfirmPassword}
-                    edge="end"
-                  >
-                    {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
-
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-            {t("personalInfo.passwordRequirements")}
+            paragraph
+          >
+            {t("personalInfo.subtitle")}
           </Typography>
 
-          <Divider sx={{ my: 2 }} />
+          <Box
+            sx={{
+              bgcolor: "background.paper",
+              p: 4,
+              borderRadius: 2,
+            }}
+          >
+            {success && (
+              <Alert severity="success" sx={{ mb: 3 }}>
+                {success}
+              </Alert>
+            )}
+            {error && (
+              <Alert severity="error" sx={{ mb: 3 }}>
+                {error}
+              </Alert>
+            )}
 
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{
-              py: 1.5,
-              bgcolor: orange[700],
-              "&:hover": {
-                bgcolor: orange[800],
-              },
-            }}
-          >
-            {t("common.next")}
-          </Button>
-        </Box>
+            <Box component="form" onSubmit={handleSubmit}>
+              <TextField
+                fullWidth
+                label={t("personalInfo.phoneLabel")}
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                required
+                sx={{
+                  mb: 3,
+                  "& .MuiOutlinedInput-root": {
+                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                      borderColor: orange[700],
+                      borderWidth: "2px",
+                    },
+                    "&:hover .MuiOutlinedInput-notchedOutline": {
+                      borderColor: orange[500],
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    "&.Mui-focused": {
+                      color: orange[700],
+                    },
+                  },
+                }}
+                InputLabelProps={{
+                  sx: {
+                    "&.Mui-focused": {
+                      color: orange[700],
+                    },
+                  },
+                }}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">+212</InputAdornment>
+                  ),
+                }}
+              />
 
-        {/* Language Selector */}
-        <Stack direction="row" spacing={2} justifyContent="center" mt={2}>
-          <Button
-            size="small"
-            onClick={() => i18n.changeLanguage("fr")}
-            color={i18n.language === "fr" ? "primary" : "inherit"}
-            sx={{
-              fontWeight: i18n.language === "fr" ? "bold" : "normal",
-              color: i18n.language === "fr" ? orange[700] : "inherit",
-            }}
-          >
-            Français
-          </Button>
-          <Button
-            size="small"
-            onClick={() => i18n.changeLanguage("ar")}
-            color={i18n.language === "ar" ? "primary" : "inherit"}
-            sx={{
-              fontWeight: i18n.language === "ar" ? "bold" : "normal",
-              color: i18n.language === "ar" ? orange[700] : "inherit",
-            }}
-          >
-            العربية
-          </Button>
-          <Button
-            size="small"
-            onClick={() => i18n.changeLanguage("en")}
-            color={i18n.language === "en" ? "primary" : "inherit"}
-            sx={{
-              fontWeight: i18n.language === "en" ? "bold" : "normal",
-              color: i18n.language === "en" ? orange[700] : "inherit",
-            }}
-          >
-            English
-          </Button>
-        </Stack>
-      </Box>
-    </Container>
+              <TextField
+                fullWidth
+                label={t("personalInfo.passwordLabel")}
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                sx={{
+                  mb: 2,
+                  "& .MuiOutlinedInput-root": {
+                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                      borderColor: orange[700],
+                      borderWidth: "2px",
+                    },
+                    "&:hover .MuiOutlinedInput-notchedOutline": {
+                      borderColor: orange[500],
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    "&.Mui-focused": {
+                      color: orange[700],
+                    },
+                  },
+                }}
+                InputLabelProps={{
+                  sx: {
+                    "&.Mui-focused": {
+                      color: orange[700],
+                    },
+                  },
+                }}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton onClick={handleClickShowPassword} edge="end">
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+
+              <TextField
+                fullWidth
+                label={t("personalInfo.confirmPasswordLabel")}
+                type={showConfirmPassword ? "text" : "password"}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+                sx={{
+                  mb: 2,
+                  "& .MuiOutlinedInput-root": {
+                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                      borderColor: orange[700],
+                      borderWidth: "2px",
+                    },
+                    "&:hover .MuiOutlinedInput-notchedOutline": {
+                      borderColor: orange[500],
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    "&.Mui-focused": {
+                      color: orange[700],
+                    },
+                  },
+                }}
+                InputLabelProps={{
+                  sx: {
+                    "&.Mui-focused": {
+                      color: orange[700],
+                    },
+                  },
+                }}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={handleClickShowConfirmPassword}
+                        edge="end"
+                      >
+                        {showConfirmPassword ? (
+                          <VisibilityOff />
+                        ) : (
+                          <Visibility />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+
+              <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+                {t("personalInfo.passwordRequirements")}
+              </Typography>
+
+              <Divider sx={{ my: 2 }} />
+
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{
+                  py: 1.5,
+                  bgcolor: orange[700],
+                  "&:hover": {
+                    bgcolor: orange[800],
+                  },
+                }}
+              >
+                {t("common.next")}
+              </Button>
+            </Box>
+
+            {/* Language Selector */}
+            <Stack direction="row" spacing={2} justifyContent="center" mt={2}>
+              <Button
+                size="small"
+                onClick={() => i18n.changeLanguage("fr")}
+                color={i18n.language === "fr" ? "primary" : "inherit"}
+                sx={{
+                  fontWeight: i18n.language === "fr" ? "bold" : "normal",
+                  color: i18n.language === "fr" ? orange[700] : "inherit",
+                }}
+              >
+                Français
+              </Button>
+              <Button
+                size="small"
+                onClick={() => i18n.changeLanguage("ar")}
+                color={i18n.language === "ar" ? "primary" : "inherit"}
+                sx={{
+                  fontWeight: i18n.language === "ar" ? "bold" : "normal",
+                  color: i18n.language === "ar" ? orange[700] : "inherit",
+                }}
+              >
+                العربية
+              </Button>
+              <Button
+                size="small"
+                onClick={() => i18n.changeLanguage("en")}
+                color={i18n.language === "en" ? "primary" : "inherit"}
+                sx={{
+                  fontWeight: i18n.language === "en" ? "bold" : "normal",
+                  color: i18n.language === "en" ? orange[700] : "inherit",
+                }}
+              >
+                English
+              </Button>
+            </Stack>
+          </Box>
+        </Container>
+      </Grid>
+    </Grid>
   );
 };
 

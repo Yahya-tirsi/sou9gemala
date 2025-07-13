@@ -10,8 +10,10 @@ import {
   CircularProgress,
   Stack,
   Alert,
+  Grid,
 } from "@mui/material";
 import { orange } from "@mui/material/colors";
+import SharedLayout from "../../shared/SharedLayout";
 import { sendVerificationCode } from "../../features/supplier/supplierSlice";
 
 const VerificationEmailCode = ({ email, onVerificationComplete }) => {
@@ -73,185 +75,245 @@ const VerificationEmailCode = ({ email, onVerificationComplete }) => {
   };
 
   return (
-    <Container maxWidth="sm" sx={{ py: 4 }}>
-      <Box
+    <Grid container sx={{ minHeight: "100vh" }}>
+      {/* Left side - placeholder for images/info */}
+      <Grid
+        item
+        xs={12}
+        md={7}
         sx={{
-          bgcolor: "background.paper",
-          p: 4,
-          borderRadius: 2,
-          boxShadow: 1,
+          background: "linear-gradient(135deg, #FFA726, #FB8C00)",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh", // Prend toute la hauteur
         }}
       >
-        <Typography
-          variant="h5"
-          component="h2"
-          gutterBottom
-          sx={{ color: orange[700] }}
-        >
-          {t("register.verifyYourEmail")}
-        </Typography>
-
-        <Typography paragraph>
-          {t("register.codeSentTo")} <strong>{email}</strong>
-        </Typography>
-
-        {error && (
-          <Alert severity="error" sx={{ mb: 2 }}>
-            {error}
-          </Alert>
-        )}
-        {success && (
-          <Alert severity="success" sx={{ mb: 2 }}>
-            {success}
-          </Alert>
-        )}
-
-        <Box component="form" onSubmit={handleSubmit}>
-          <TextField
-            fullWidth
-            label={t("register.email")}
-            value={email}
-            variant="outlined"
-            sx={{
-              mb: 2,
-              "& .MuiOutlinedInput-root": {
-                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  borderColor: orange[700],
-                  borderWidth: "2px",
-                },
-                "&:hover .MuiOutlinedInput-notchedOutline": {
-                  borderColor: orange[500],
-                },
-              },
-              "& .MuiInputLabel-root": {
-                "&.Mui-focused": {
-                  color: orange[700],
-                },
-              },
-            }}
-            InputLabelProps={{
-              sx: {
-                "&.Mui-focused": {
-                  color: orange[700],
-                },
-              },
-            }}
-            InputProps={{
-              readOnly: true,
-            }}
-          />
-
-          <TextField
-            fullWidth
-            label={t("register.verificationCode")}
-            value={code}
-            onChange={(e) => setCode(e.target.value)}
-            variant="outlined"
-            sx={{
-              mb: 3,
-              "& .MuiOutlinedInput-root": {
-                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  borderColor: orange[700],
-                  borderWidth: "2px",
-                },
-                "&:hover .MuiOutlinedInput-notchedOutline": {
-                  borderColor: orange[500],
-                },
-              },
-              "& .MuiInputLabel-root": {
-                "&.Mui-focused": {
-                  color: orange[700],
-                },
-              },
-            }}
-            InputLabelProps={{
-              sx: {
-                "&.Mui-focused": {
-                  color: orange[700],
-                },
-              },
-            }}
-            required
-          />
-
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            disabled={isLoading}
-            sx={{
-              py: 1.5,
-              bgcolor: orange[700],
-              "&:hover": {
-                bgcolor: orange[800],
-              },
-            }}
-          >
-            {isLoading ? (
-              <CircularProgress size={24} color="inherit" />
-            ) : (
-              t("common.verify")
-            )}
-          </Button>
+        <Box sx={{ p: 4, textAlign: "center" }}>
+          <Typography variant="h3" gutterBottom>
+            Welcome to Our Platform
+          </Typography>
+          <Typography variant="body1">
+            Join thousands of happy suppliers growing their business with us
+          </Typography>
         </Box>
+      </Grid>
 
-        <Button
-          fullWidth
-          onClick={resendCode}
-          disabled={countdown > 0 || resendLoading}
+      <Grid
+        tem
+        xs={12}
+        md={5}
+        sx={{
+          display: "flex",
+          justifyContent: "flex-start", // décalage vers la droite
+          marginLeft: { xs: "0", md: "3.5rem" },
+          alignItems: "center",
+          px: { xs: 2, md: 6 }, // plus d’espace à droite sur desktop
+          backgroundColor: "background.default",
+        }}
+      >
+        <Container
+          maxWidth="sm"
           sx={{
-            mt: 2,
-            color: countdown > 0 ? "text.disabled" : orange[700],
-            textTransform: "none",
+            bgcolor: "background.paper",
+            p: 4,
+            borderRadius: 2,
+            width: "100%",
           }}
         >
-          {resendLoading ? (
-            <CircularProgress size={24} color="inherit" />
-          ) : (
-            <>
-              {t("register.resendCode")} {countdown > 0 && `(${countdown}s)`}
-            </>
-          )}
-        </Button>
+          <SharedLayout activeStep={2} />
 
-        {/* Language Selector */}
-        <Stack direction="row" spacing={2} justifyContent="center" mt={2}>
-          <Button
-            size="small"
-            onClick={() => i18n.changeLanguage("fr")}
-            color={i18n.language === "fr" ? "primary" : "inherit"}
+          <Typography
+            variant="h5"
+            component="h2"
+            gutterBottom
             sx={{
-              fontWeight: i18n.language === "fr" ? "bold" : "normal",
-              color: i18n.language === "fr" ? orange[700] : "inherit",
+              fontSize: "24px",
+              fontWeight: "bold",
+              textAlign: "center",
             }}
           >
-            Français
-          </Button>
-          <Button
-            size="small"
-            onClick={() => i18n.changeLanguage("ar")}
-            color={i18n.language === "ar" ? "primary" : "inherit"}
+            {t("register.verifyYourEmail")}
+          </Typography>
+
+          <Typography
             sx={{
-              fontWeight: i18n.language === "ar" ? "bold" : "normal",
-              color: i18n.language === "ar" ? orange[700] : "inherit",
+              color: "gray",
+              textAlign: "center",
+            }}
+            paragraph
+          >
+            {t("register.codeSentTo")} <strong>{email}</strong>
+          </Typography>
+
+          <Box
+            sx={{
+              bgcolor: "background.paper",
+              p: 4,
+              borderRadius: 2,
             }}
           >
-            العربية
-          </Button>
-          <Button
-            size="small"
-            onClick={() => i18n.changeLanguage("en")}
-            color={i18n.language === "en" ? "primary" : "inherit"}
-            sx={{
-              fontWeight: i18n.language === "en" ? "bold" : "normal",
-              color: i18n.language === "en" ? orange[700] : "inherit",
-            }}
-          >
-            English
-          </Button>
-        </Stack>
-      </Box>
-    </Container>
+            {error && (
+              <Alert severity="error" sx={{ mb: 2 }}>
+                {error}
+              </Alert>
+            )}
+            {success && (
+              <Alert severity="success" sx={{ mb: 2 }}>
+                {success}
+              </Alert>
+            )}
+
+            <Box component="form" onSubmit={handleSubmit}>
+              <TextField
+                fullWidth
+                label={t("register.email")}
+                value={email}
+                variant="outlined"
+                sx={{
+                  opacity: 0.6,
+                  mb: 2,
+                  "& .MuiOutlinedInput-root": {
+                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                      borderColor: orange[700],
+                      borderWidth: "2px",
+                    },
+                    "&:hover .MuiOutlinedInput-notchedOutline": {
+                      borderColor: orange[500],
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    "&.Mui-focused": {
+                      color: orange[700],
+                    },
+                  },
+                }}
+                InputLabelProps={{
+                  sx: {
+                    "&.Mui-focused": {
+                      color: orange[700],
+                    },
+                  },
+                }}
+                InputProps={{
+                  readOnly: true,
+                }}
+              />
+
+              <TextField
+                fullWidth
+                label={t("register.verificationCode")}
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                variant="outlined"
+                sx={{
+                  mb: 3,
+                  "& .MuiOutlinedInput-root": {
+                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                      borderColor: orange[700],
+                      borderWidth: "2px",
+                    },
+                    "&:hover .MuiOutlinedInput-notchedOutline": {
+                      borderColor: orange[500],
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    "&.Mui-focused": {
+                      color: orange[700],
+                    },
+                  },
+                }}
+                InputLabelProps={{
+                  sx: {
+                    "&.Mui-focused": {
+                      color: orange[700],
+                    },
+                  },
+                }}
+                required
+              />
+
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                disabled={isLoading}
+                sx={{
+                  py: 1.5,
+                  bgcolor: orange[700],
+                  "&:hover": {
+                    bgcolor: orange[800],
+                  },
+                }}
+              >
+                {isLoading ? (
+                  <CircularProgress size={24} color="inherit" />
+                ) : (
+                  t("common.verify")
+                )}
+              </Button>
+            </Box>
+
+            <Button
+              fullWidth
+              onClick={resendCode}
+              disabled={countdown > 0 || resendLoading}
+              sx={{
+                mt: 2,
+                color: countdown > 0 ? "text.disabled" : orange[700],
+                textTransform: "none",
+              }}
+            >
+              {resendLoading ? (
+                <CircularProgress size={24} color="inherit" />
+              ) : (
+                <>
+                  {t("register.resendCode")}{" "}
+                  {countdown > 0 && `(${countdown}s)`}
+                </>
+              )}
+            </Button>
+
+            {/* Language Selector */}
+            <Stack direction="row" spacing={2} justifyContent="center" mt={2}>
+              <Button
+                size="small"
+                onClick={() => i18n.changeLanguage("fr")}
+                color={i18n.language === "fr" ? "primary" : "inherit"}
+                sx={{
+                  fontWeight: i18n.language === "fr" ? "bold" : "normal",
+                  color: i18n.language === "fr" ? orange[700] : "inherit",
+                }}
+              >
+                Français
+              </Button>
+              <Button
+                size="small"
+                onClick={() => i18n.changeLanguage("ar")}
+                color={i18n.language === "ar" ? "primary" : "inherit"}
+                sx={{
+                  fontWeight: i18n.language === "ar" ? "bold" : "normal",
+                  color: i18n.language === "ar" ? orange[700] : "inherit",
+                }}
+              >
+                العربية
+              </Button>
+              <Button
+                size="small"
+                onClick={() => i18n.changeLanguage("en")}
+                color={i18n.language === "en" ? "primary" : "inherit"}
+                sx={{
+                  fontWeight: i18n.language === "en" ? "bold" : "normal",
+                  color: i18n.language === "en" ? orange[700] : "inherit",
+                }}
+              >
+                English
+              </Button>
+            </Stack>
+          </Box>
+        </Container>
+      </Grid>
+    </Grid>
   );
 };
 

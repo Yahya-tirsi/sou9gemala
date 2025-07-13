@@ -8,9 +8,11 @@ import {
   TextField,
   Typography,
   CircularProgress,
+  Grid,
   Stack,
 } from "@mui/material";
 import { orange } from "@mui/material/colors";
+import SharedLayout from "../../shared/SharedLayout";
 // import { checkEmailExists } from "../../features/supplier/supplierSlice";
 
 const EmailInput = ({ email: propEmail = "", onVerified, onBack }) => {
@@ -42,131 +44,191 @@ const EmailInput = ({ email: propEmail = "", onVerified, onBack }) => {
   };
 
   return (
-    <Container maxWidth="sm" sx={{ py: 4 }}>
-      <Box
+    <Grid container sx={{ minHeight: "100vh" }}>
+      {/* Left side - placeholder for images/info */}
+      <Grid
+        item
+        xs={12}
+        md={7}
         sx={{
-          bgcolor: "background.paper",
-          p: 4,
-          borderRadius: 2,
-          boxShadow: 1,
+          background: "linear-gradient(135deg, #FFA726, #FB8C00)",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh", // Prend toute la hauteur
         }}
       >
-        <Typography
-          variant="h5"
-          component="h2"
-          gutterBottom
-          sx={{ color: orange[700] }}
-        >
-          {t("register.configureAccount")}
-        </Typography>
-
-        <Typography paragraph>{t("register.enterEmailToCreate")}</Typography>
-
-        <Box component="form" onSubmit={handleSubmit}>
-          <TextField
-            fullWidth
-            label={`${t("register.emailAddress")} *`}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            variant="outlined"
-            sx={{
-              mb: 3,
-              "& .MuiOutlinedInput-root": {
-                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  borderColor: orange[700],
-                  borderWidth: "2px",
-                },
-                "&:hover .MuiOutlinedInput-notchedOutline": {
-                  borderColor: orange[500],
-                },
-              },
-              "& .MuiInputLabel-root": {
-                "&.Mui-focused": {
-                  color: orange[700],
-                },
-              },
-            }}
-            InputLabelProps={{
-              sx: {
-                "&.Mui-focused": {
-                  color: orange[700],
-                },
-              },
-            }}
-            required
-            type="email"
-            error={!!error}
-            helperText={error}
-            inputProps={{
-              "data-testid": "email-input",
-            }}
-          />
-
-          <Box sx={{ display: "flex", gap: 2 }}>
-            {onBack && (
-              <Button variant="outlined" onClick={onBack} sx={{ flex: 1 }}>
-                {t("common.back")}
-              </Button>
-            )}
-
-            <Button
-              type="submit"
-              variant="contained"
-              disabled={isLoading}
-              sx={{
-                flex: 1,
-                py: 1.5,
-                bgcolor: orange[700],
-                "&:hover": { bgcolor: orange[800] },
-              }}
-            >
-              {isLoading ? (
-                <CircularProgress size={24} color="inherit" />
-              ) : (
-                t("common.signIn")
-              )}
-            </Button>
-          </Box>
+        <Box sx={{ p: 4, textAlign: "center" }}>
+          <Typography variant="h3" gutterBottom>
+            Welcome to Our Platform
+          </Typography>
+          <Typography variant="body1">
+            Join thousands of happy suppliers growing their business with us
+          </Typography>
         </Box>
+      </Grid>
 
-        {/* Language Selector */}
-        <Stack direction="row" spacing={2} justifyContent="center" mt={2}>
-          <Button
-            size="small"
-            onClick={() => i18n.changeLanguage("fr")}
-            color={i18n.language === "fr" ? "primary" : "inherit"}
+      <Grid
+        tem
+        xs={12}
+        md={5}
+        sx={{
+          display: "flex",
+          justifyContent: "flex-start", // décalage vers la droite
+          marginLeft: { xs: "0", md: "3.5rem" },
+          alignItems: "center",
+          px: { xs: 2, md: 6 }, // plus d’espace à droite sur desktop
+          backgroundColor: "background.default",
+        }}
+      >
+        <Container
+          maxWidth="sm"
+          sx={{
+            bgcolor: "background.paper",
+            p: 4,
+            borderRadius: 2,
+            width: "100%",
+          }}
+        >
+          <SharedLayout activeStep={1} />
+
+          <Typography
+            variant="h5"
+            component="h2"
+            gutterBottom
             sx={{
-              fontWeight: i18n.language === "fr" ? "bold" : "normal",
-              color: i18n.language === "fr" ? orange[700] : "inherit",
+              fontSize: "24px",
+              fontWeight: "bold",
+              textAlign: "center",
             }}
           >
-            Français
-          </Button>
-          <Button
-            size="small"
-            onClick={() => i18n.changeLanguage("ar")}
-            color={i18n.language === "ar" ? "primary" : "inherit"}
+            {t("register.configureAccount")}
+          </Typography>
+
+          <Typography
             sx={{
-              fontWeight: i18n.language === "ar" ? "bold" : "normal",
-              color: i18n.language === "ar" ? orange[700] : "inherit",
+              color: "gray",
+              textAlign: "center",
+            }}
+            paragraph
+          >
+            {t("register.enterEmailToCreate")}
+          </Typography>
+
+          <Box
+            sx={{
+              bgcolor: "background.paper",
+              p: 4,
+              borderRadius: 2,
             }}
           >
-            العربية
-          </Button>
-          <Button
-            size="small"
-            onClick={() => i18n.changeLanguage("en")}
-            color={i18n.language === "en" ? "primary" : "inherit"}
-            sx={{
-              fontWeight: i18n.language === "en" ? "bold" : "normal",
-              color: i18n.language === "en" ? orange[700] : "inherit",
-            }}
-          >
-            English
-          </Button>
-        </Stack>
-      </Box>
-    </Container>
+            <Box component="form" onSubmit={handleSubmit}>
+              <TextField
+                fullWidth
+                label={`${t("register.emailAddress")}`}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                variant="outlined"
+                sx={{
+                  mb: 3,
+                  "& .MuiOutlinedInput-root": {
+                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                      borderColor: orange[700],
+                      borderWidth: "2px",
+                    },
+                    "&:hover .MuiOutlinedInput-notchedOutline": {
+                      borderColor: orange[500],
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    "&.Mui-focused": {
+                      color: orange[700],
+                    },
+                  },
+                }}
+                InputLabelProps={{
+                  sx: {
+                    "&.Mui-focused": {
+                      color: orange[700],
+                    },
+                  },
+                }}
+                required
+                type="email"
+                error={!!error}
+                helperText={error}
+                inputProps={{
+                  "data-testid": "email-input",
+                }}
+              />
+
+              <Box sx={{ display: "flex", gap: 2 }}>
+                {onBack && (
+                  <Button variant="outlined" onClick={onBack} sx={{ flex: 1 }}>
+                    {t("common.back")}
+                  </Button>
+                )}
+
+                <Button
+                  type="submit"
+                  variant="contained"
+                  disabled={isLoading}
+                  sx={{
+                    flex: 1,
+                    py: 1.5,
+                    bgcolor: orange[700],
+                    "&:hover": { bgcolor: orange[800] },
+                  }}
+                >
+                  {isLoading ? (
+                    <CircularProgress size={24} color="inherit" />
+                  ) : (
+                    t("common.signIn")
+                  )}
+                </Button>
+              </Box>
+            </Box>
+
+            {/* Language Selector */}
+            <Stack direction="row" spacing={2} justifyContent="center" mt={2}>
+              <Button
+                size="small"
+                onClick={() => i18n.changeLanguage("fr")}
+                color={i18n.language === "fr" ? "primary" : "inherit"}
+                sx={{
+                  fontWeight: i18n.language === "fr" ? "bold" : "normal",
+                  color: i18n.language === "fr" ? orange[700] : "inherit",
+                }}
+              >
+                Français
+              </Button>
+              <Button
+                size="small"
+                onClick={() => i18n.changeLanguage("ar")}
+                color={i18n.language === "ar" ? "primary" : "inherit"}
+                sx={{
+                  fontWeight: i18n.language === "ar" ? "bold" : "normal",
+                  color: i18n.language === "ar" ? orange[700] : "inherit",
+                }}
+              >
+                العربية
+              </Button>
+              <Button
+                size="small"
+                onClick={() => i18n.changeLanguage("en")}
+                color={i18n.language === "en" ? "primary" : "inherit"}
+                sx={{
+                  fontWeight: i18n.language === "en" ? "bold" : "normal",
+                  color: i18n.language === "en" ? orange[700] : "inherit",
+                }}
+              >
+                English
+              </Button>
+            </Stack>
+          </Box>
+        </Container>
+      </Grid>
+    </Grid>
   );
 };
 
