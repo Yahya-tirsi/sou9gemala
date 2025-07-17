@@ -2,6 +2,8 @@
   "register": {
     "verifyYourEmail": "Verify Your Email",
     "email": "Email Address",
+    "codeSentSuccessfully": "Code Sent Successfully",
+    "emailAlreadyExists": "Email already exists",
     "codeSendingFailed": "Failed to send verification code",
     "verificationFailed": "Verification failed, please check the code",
     "sellOnJumia": "Sell on SouqJemla",
@@ -59,12 +61,20 @@
     "title": "Personal Information",
     "subtitle": "Set up your password and provide your phone number",
     "phoneLabel": "Phone Number",
+    "phoneNumberExists": "Phone number exists",
+    "invalidPhoneNumber": "Invalid phone number",
     "passwordLabel": "Password",
     "confirmPasswordLabel": "Confirm Password",
     "nextButton": "NEXT",
     "forgotPassword": "Forgot Password?",
     "passwordsNotMatch": "Passwords do not match",
     "passwordLength": "Password must contain at least 8 characters",
+    "passwordMustContain": "Password must contain",
+    "minLength": "At least 9 characters",
+    "uppercaseLetter": "1 uppercase letter",
+    "number": "1 number",
+    "specialCharacter": "1 special character",
+    "passwordRequirementsNotMet": "Please meet all password requirements",
     "passwordRequirements": "Password must contain at least 8 characters including one uppercase letter, one lowercase letter, one number and one special character."
   }
 }

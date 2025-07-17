@@ -2,6 +2,8 @@
   "register": {
     "verifyYourEmail": "Vérifiez votre e-mail",
     "email": "Adresse email",
+    "emailAlreadyExists": "L'email existe déjà",
+    "codeSentSuccessfully": "Code envoyé avec succès",
     "codeSendingFailed": "Échec de l'envoi du code de vérification",
     "verificationFailed": "Verification failed, please check the code",
     "sellOnJumia": "Vendre sur SouqJemla",
@@ -61,10 +63,18 @@
     "phoneLabel": "Numéro de téléphone",
     "passwordLabel": "Mot de passe",
     "confirmPasswordLabel": "Confirmez le mot de passe",
+    "phoneNumberExists": "Le numéro de téléphone existe",
+    "invalidPhoneNumber": "Numéro de téléphone invalide",
     "nextButton": "SUIVANT",
     "forgotPassword": "Mot de passe oublié ?",
-    "passwordsNotMatch": "Les mots de passe ne correspondent pas",
+    "passwordsNotMatch": "Le mots de passe ne correspondent pas",
     "passwordLength": "Le mot de passe doit contenir au moins 8 caractères",
+    "passwordMustContain": "Le mot de passe doit contenir",
+    "minLength": "Au moins 9 caractères",
+    "uppercaseLetter": "1 lettre majuscule",
+    "number": "1 chiffre",
+    "specialCharacter": "1 caractère spécial",
+    "passwordRequirementsNotMet": "Veuillez respecter toutes les exigences du mot de passe",
     "passwordRequirements": "Le mot de passe doit contenir au moins 8 caractères contenant une majuscule, une lettre inférieure, un nombre et un caractère spécial."
   }
 }

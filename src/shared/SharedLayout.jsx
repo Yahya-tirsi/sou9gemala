@@ -11,7 +11,6 @@ const steps = [
   "Email Verification",
   "Phone Verification",
   "Personal Info",
-  "Store Setup",
 ];
 
 const SharedLayout = ({ activeStep }) => {

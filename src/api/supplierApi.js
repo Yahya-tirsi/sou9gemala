@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:5000/api/suppliers";
+const API_BASE_URL = "https://localhost:5001/api";
 
 const handleResponse = async (response) => {
   if (!response.ok) {
@@ -9,29 +9,59 @@ const handleResponse = async (response) => {
 };
 
 const supplierApi = {
-  
   // Register supplier
   register: async (supplierData) => {
     try {
-      const response = await fetch(API_BASE_URL, {
+      const response = await fetch(`${API_BASE_URL}/auth/register/seller`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(supplierData),
       });
-      console.log(supplierData);
-      
+
       return await handleResponse(response);
     } catch (error) {
       throw new Error(error.message || "Failed to register supplier");
     }
   },
 
+  // Login supplier
+  login: async (credentials) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(credentials),
+      });
+      return await handleResponse(response);
+    } catch (error) {
+      throw new Error(error.message || "Login failed");
+    }
+  },
+
+  // Forget password supplier
+  forgotPassword: async (email) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/auth/forgot-password`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+      return await handleResponse(response);
+    } catch (error) {
+      throw new Error(error.message || "Password reset request failed");
+    }
+  },
+
   // Verify email
   verifyEmail: async (email, code) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/verify`, {
+      const response = await fetch(`${API_BASE_URL}/auth/confirm-verification`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -47,7 +77,7 @@ const supplierApi = {
   // Send verification code
   sendVerificationCode: async (email) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/send-verification`, {
+      const response = await fetch(`${API_BASE_URL}/auth/verify-email`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -64,7 +94,7 @@ const supplierApi = {
   checkEmailExists: async (email) => {
     try {
       const response = await fetch(
-        `${API_BASE_URL}/check-email?email=${encodeURIComponent(email)}`
+        `${API_BASE_URL}/auth/check-email/${encodeURIComponent(email)}`
       );
       return await handleResponse(response);
     } catch (error) {

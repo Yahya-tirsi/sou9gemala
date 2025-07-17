@@ -14,9 +14,12 @@ import {
 } from "@mui/material";
 import { orange } from "@mui/material/colors";
 import SharedLayout from "../../shared/SharedLayout";
-import { sendVerificationCode } from "../../features/supplier/supplierSlice";
+import {
+  sendVerificationCode,
+  verifyEmail,
+} from "../../features/supplier/supplierSlice";
 
-const VerificationEmailCode = ({ email, onVerificationComplete }) => {
+const VerificationEmailCode = ({ email, onVerificationComplete, onBack }) => {
   const { t, i18n } = useTranslation();
   const [code, setCode] = useState("");
   const [countdown, setCountdown] = useState(60);
@@ -59,7 +62,7 @@ const VerificationEmailCode = ({ email, onVerificationComplete }) => {
     setSuccess(null);
 
     try {
-      // await dispatch(verifyEmail({ email, code })).unwrap();
+      await dispatch(verifyEmail({ email, code })).unwrap();
       setSuccess(t("register.verificationSuccessful"));
       onVerificationComplete();
     } catch {
@@ -71,6 +74,7 @@ const VerificationEmailCode = ({ email, onVerificationComplete }) => {
 
   const resendCode = () => {
     handleSendVerificationCode();
+    setCode("");
     setCountdown(60);
   };
 
@@ -233,25 +237,50 @@ const VerificationEmailCode = ({ email, onVerificationComplete }) => {
                 required
               />
 
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                disabled={isLoading}
-                sx={{
-                  py: 1.5,
-                  bgcolor: orange[700],
-                  "&:hover": {
-                    bgcolor: orange[800],
-                  },
-                }}
-              >
-                {isLoading ? (
-                  <CircularProgress size={24} color="inherit" />
-                ) : (
-                  t("common.verify")
+              <Box sx={{ display: "flex", gap: 2 }}>
+                {onBack && (
+                  <Button
+                    variant="outlined"
+                    onClick={onBack}
+                    sx={{
+                      flex: 1,
+                      border: "1px solid",
+                      borderColor: `${orange[700]}`,
+                      color: `${orange[700]}`,
+                      "&:hover": {
+                        borderColor: `${orange[700]}`,
+                        color: `${orange[700]}`,
+                        backgroundColor: "rgba(255, 152, 0, 0.08)",
+                      },
+                      "&:active": {
+                        borderColor: "orange.800",
+                        backgroundColor: "rgba(255, 152, 0, 0.12)",
+                      },
+                    }}
+                  >
+                    {t("common.back")}
+                  </Button>
                 )}
-              </Button>
+
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  disabled={isLoading}
+                  sx={{
+                    flex: 1,
+                    py: 1.5,
+                    bgcolor: orange[700],
+                    "&:hover": { bgcolor: orange[800] },
+                  }}
+                >
+                  {isLoading ? (
+                    <CircularProgress size={24} color="inherit" />
+                  ) : (
+                    t("common.verify")
+                  )}
+                </Button>
+              </Box>
             </Box>
 
             <Button

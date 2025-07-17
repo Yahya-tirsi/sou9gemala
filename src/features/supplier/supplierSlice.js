@@ -21,6 +21,36 @@ export const registerSupplier = createAsyncThunk(
       const response = await supplierService.register(supplierData);
       return response; // This should include the created supplier data
     } catch (error) {
+      if (error.DuplicatePhoneNumber) {
+        return thunkAPI.rejectWithValue({
+          message: "Phone number already exists",
+          type: "DUPLICATE_PHONE",
+        });
+      }
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const login = createAsyncThunk(
+  "supplier/login",
+  async (credentials, thunkAPI) => {
+    try {
+      const response = await supplierService.login(credentials);
+      return response;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const requestPasswordReset = createAsyncThunk(
+  "supplier/forgotPassword",
+  async (email, thunkAPI) => {
+    try {
+      await supplierService.forgotPassword(email);
+      return email;
+    } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
   }
@@ -89,6 +119,7 @@ const supplierSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+
       // Registration process
       .addCase(registerSupplier.pending, (state) => {
         state.isLoading = true;
@@ -141,15 +172,42 @@ const supplierSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
+      })
+
+      // Login process
+      .addCase(login.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(login.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.supplier = action.payload;
+      })
+      .addCase(login.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+
+      // Forget password process
+      .addCase(requestPasswordReset.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(requestPasswordReset.fulfilled, (state) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.message = "Password reset instructions sent";
+      })
+      .addCase(requestPasswordReset.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
       });
   },
 });
 
-export const {
-  reset,
-  setStep,
-  saveStepData,
-  setVerificationSent, // Add this export
-} = supplierSlice.actions;
+export const { reset, setStep, saveStepData, setVerificationSent } =
+  supplierSlice.actions;
 
 export default supplierSlice.reducer;

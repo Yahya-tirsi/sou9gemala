@@ -1,7 +1,9 @@
 {
   "register": {
     "verifyYourEmail": "التحقق من بريدك الإلكتروني",
+    "codeSentSuccessfully": "تم إرسال الرمز بنجاح",
     "email": "عنوان البريد الإلكتروني",
+    "emailAlreadyExists": "البريد الإلكتروني موجود بالفعل",
     "codeSendingFailed": "فشل في إرسال رمز التحقق",
     "verificationFailed": "فشل التحقق، يرجى التحقق من الرمز",
     "storeYears": "7 سنوات من الخبرة",
@@ -60,11 +62,19 @@
     "subtitle": "قم بإعداد كلمة المرور الخاصة بك وقدم رقم هاتفك",
     "phoneLabel": "رقم الهاتف",
     "passwordLabel": "كلمة المرور",
+    "phoneNumberExists": "رقم الهاتف موجود",
+    "invalidPhoneNumber": "رقم هاتف غير صالح",
     "confirmPasswordLabel": "تأكيد كلمة المرور",
     "nextButton": "التالي",
     "forgotPassword": "نسيت كلمة المرور؟",
     "passwordsNotMatch": "كلمات المرور غير متطابقة",
     "passwordLength": "يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل",
+    "passwordMustContain": "يجب أن تحتوي كلمة المرور على",
+    "minLength": "9 أحرف على الأقل",
+    "uppercaseLetter": "حرف كبير واحد",
+    "number": "رقم واحد",
+    "specialCharacter": "حرف خاص واحد",
+    "passwordRequirementsNotMet": "يرجى استيفاء جميع متطلبات كلمة المرور",
     "passwordRequirements": "يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل تحتوي على حرف كبير وحرف صغير ورقم وحرف خاص."
   }
 }

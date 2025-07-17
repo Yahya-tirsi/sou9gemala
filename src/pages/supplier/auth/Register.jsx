@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import BasicInfo from "../../components/supplier/BasicInfo";
-import PersonalInfo from "../../components/supplier/PersonalInfo";
-import StoreInfo from "../../components/supplier/StoreInfo";
-import RegistrationSuccessModal from "../../components/supplier/RegistrationSuccessModal";
-import EmailInput from "../../components/supplier/EmailInput";
-import VerificationEmailCode from "../../components/supplier/VerificationEmailCode";
-import { registerSupplier } from "../../features/supplier/supplierSlice";
+import BasicInfo from "../../../components/supplier/BasicInfo";
+import PersonalInfo from "../../../components/supplier/PersonalInfo";
+import StoreInfo from "../../../components/supplier/StoreInfo";
+import RegistrationSuccessModal from "../../../components/supplier/RegistrationSuccessModal";
+import EmailInput from "../../../components/supplier/EmailInput";
+import VerificationEmailCode from "../../../components/supplier/VerificationEmailCode";
+import { registerSupplier } from "../../../features/supplier/supplierSlice";
 import { useDispatch } from "react-redux";
 
 const SupplierRegister = () => {
@@ -15,9 +15,8 @@ const SupplierRegister = () => {
     firstName: "",
     lastName: "",
     email: "",
-    phone: "",
+    phoneNumber: "",
     password: "",
-    storeName: "",
   });
   const [successModalOpen, setSuccessModalOpen] = useState(false);
   const navigate = useNavigate();
@@ -40,27 +39,25 @@ const SupplierRegister = () => {
   //   nextStep();
   // };
 
-  const handlePersonalInfoSubmit = (data) => {
-    setFormData({ ...formData, ...data });
-    nextStep();
-  };
-
-  const handleStoreInfoSubmit = async (store) => {
+  const handlePersonalInfoSubmit = async (data) => {
     try {
-      setFormData({
-        ...formData,
-        storeName: store,
-      });
+      const resultAction = await dispatch(
+        registerSupplier({
+          phoneNumber: data.phoneNumber,
+          password: data.password,
+        })
+      );
 
-      console.log(formData);
-
-      await dispatch(registerSupplier(formData)).unwrap();
-
-      setSuccessModalOpen(true);
+      if (registerSupplier.fulfilled.match(resultAction)) {
+        // setShowSuccessModal(true);
+      }
     } catch (error) {
       console.error("Registration failed:", error);
     }
+    // nextStep();
   };
+
+  // const handleStoreInfoSubmit = async () => {};
 
   const handleEmailVerified = (emailData) => {
     setFormData((prev) => ({ ...prev, email: emailData.email }));
@@ -71,8 +68,6 @@ const SupplierRegister = () => {
     setSuccessModalOpen(false);
     navigate("/supplier/login");
   };
-
-  console.log(formData);
 
   switch (step) {
     case 1:
@@ -95,12 +90,18 @@ const SupplierRegister = () => {
       );
     case 4:
       return (
-        <PersonalInfo onNext={handlePersonalInfoSubmit} onBack={prevStep} />
+        <>
+          <PersonalInfo onNext={handlePersonalInfoSubmit} onBack={prevStep} />
+          <RegistrationSuccessModal
+            open={successModalOpen}
+            onClose={handleModalClose}
+          />
+        </>
       );
     case 5:
       return (
         <>
-          <StoreInfo onSubmit={handleStoreInfoSubmit} onBack={prevStep} />
+          <StoreInfo onBack={prevStep} />
           <RegistrationSuccessModal
             open={successModalOpen}
             onClose={handleModalClose}

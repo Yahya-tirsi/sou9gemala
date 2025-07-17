@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-// import { useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import {
   Box,
@@ -13,14 +13,14 @@ import {
 } from "@mui/material";
 import { orange } from "@mui/material/colors";
 import SharedLayout from "../../shared/SharedLayout";
-// import { checkEmailExists } from "../../features/supplier/supplierSlice";
+import { checkEmailExists } from "../../features/supplier/supplierSlice";
 
 const EmailInput = ({ email: propEmail = "", onVerified, onBack }) => {
   const { t, i18n } = useTranslation();
   const [email, setEmail] = useState(propEmail);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,14 +28,13 @@ const EmailInput = ({ email: propEmail = "", onVerified, onBack }) => {
     setError("");
 
     try {
-      // const result = await dispatch(checkEmailExists(email)).unwrap();
-      onVerified({ email });
+      const result = await dispatch(checkEmailExists(email)).unwrap();
 
-      // if (result.exists) {
-      //   setError(t("register.emailAlreadyExists"));
-      // } else {
-      //   onVerified({ email });
-      // }
+      if (result.exists) {
+        setError(t("register.emailAlreadyExists"));
+      } else {
+        onVerified({ email });
+      }
     } catch (err) {
       setError(err.message || t("register.emailCheckError"));
     } finally {
@@ -69,7 +68,6 @@ const EmailInput = ({ email: propEmail = "", onVerified, onBack }) => {
       </Grid>
 
       <Grid
-        tem
         xs={12}
         md={5}
         sx={{
@@ -93,8 +91,6 @@ const EmailInput = ({ email: propEmail = "", onVerified, onBack }) => {
           <SharedLayout activeStep={1} />
 
           <Typography
-            variant="h5"
-            component="h2"
             gutterBottom
             sx={{
               fontSize: "24px",
@@ -110,6 +106,7 @@ const EmailInput = ({ email: propEmail = "", onVerified, onBack }) => {
               color: "gray",
               textAlign: "center",
             }}
+            variant="body1"
             paragraph
           >
             {t("register.enterEmailToCreate")}
@@ -164,7 +161,25 @@ const EmailInput = ({ email: propEmail = "", onVerified, onBack }) => {
 
               <Box sx={{ display: "flex", gap: 2 }}>
                 {onBack && (
-                  <Button variant="outlined" onClick={onBack} sx={{ flex: 1 }}>
+                  <Button
+                    variant="outlined"
+                    onClick={onBack}
+                    sx={{
+                      flex: 1,
+                      border: "1px solid",
+                      borderColor: `${orange[700]}`,
+                      color: `${orange[700]}`,
+                      "&:hover": {
+                        borderColor: `${orange[700]}`,
+                        color: `${orange[700]}`,
+                        backgroundColor: "rgba(255, 152, 0, 0.08)", 
+                      },
+                      "&:active": {
+                        borderColor: "orange.800",
+                        backgroundColor: "rgba(255, 152, 0, 0.12)", 
+                      },
+                    }}
+                  >
                     {t("common.back")}
                   </Button>
                 )}

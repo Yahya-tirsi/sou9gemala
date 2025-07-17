@@ -17,6 +17,9 @@ import {
 import { orange } from "@mui/material/colors";
 import SharedLayout from "../../shared/SharedLayout";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import CheckIcon from "@mui/icons-material/Check";
+import CloseIcon from "@mui/icons-material/Close";
+import RegistrationSuccessModal from "./RegistrationSuccessModal";
 
 const PersonalInfo = ({ onNext }) => {
   const { t, i18n } = useTranslation();
@@ -26,21 +29,71 @@ const PersonalInfo = ({ onNext }) => {
   const [error, setError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [success] = useState("E-mail vérifié avec succès");
+  const [success, setSuccess] = useState("E-mail vérifié avec succès");
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [passwordRequirements, setPasswordRequirements] = useState({
+    length: false,
+    uppercase: false,
+    number: false,
+    specialChar: false,
+  });
 
-  const handleSubmit = (e) => {
+  const checkPasswordRequirements = (pwd) => {
+    setPasswordRequirements({
+      length: pwd.length >= 9,
+      uppercase: /[A-Z]/.test(pwd),
+      number: /\d/.test(pwd),
+      specialChar: /[!@#$%^&*(),.?":{}|<>]/.test(pwd),
+    });
+  };
+
+  const handlePasswordChange = (e) => {
+    const pwd = e.target.value;
+    setPassword(pwd);
+    checkPasswordRequirements(pwd);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Check password match
     if (password !== confirmPassword) {
       setError(t("personalInfo.passwordsNotMatch"));
+      setSuccess("");
       return;
     }
-    if (password.length < 8) {
-      setError(t("personalInfo.passwordLength"));
+
+    // Check password requirements
+    if (!Object.values(passwordRequirements).every(Boolean)) {
+      setError(t("personalInfo.passwordRequirementsNotMet"));
+      setSuccess("");
       return;
     }
-    setError(null);
-    onNext({ phone: `+212${phone}`, password });
+
+    if (!phone || phone.length <= 9) {
+      setError(t("personalInfo.invalidPhoneNumber"));
+      return;
+    }
+
+    try {
+      setError(null);
+      // Assuming onNext is an async API call
+      await onNext({ phoneNumber: `+212${phone}`, password });
+
+      // If we get here, the request was successful
+      setShowSuccessModal(true);
+    } catch (err) {
+      console.error("API Error:", err.response?.data || err.message);
+
+      // Handle specific error cases
+      if (err.response?.data?.DuplicatePhoneNumber) {
+        setError(t("personalInfo.phoneNumberExists"));
+      } else {
+        setError(t("common.unknownError"));
+      }
+    }
   };
+
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleClickShowConfirmPassword = () =>
@@ -176,7 +229,7 @@ const PersonalInfo = ({ onNext }) => {
                 label={t("personalInfo.passwordLabel")}
                 type={showPassword ? "text" : "password"}
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={handlePasswordChange} // Updated handler
                 required
                 sx={{
                   mb: 2,
@@ -212,6 +265,147 @@ const PersonalInfo = ({ onNext }) => {
                   ),
                 }}
               />
+
+              {/* Password Requirements Checklist */}
+              {password && (
+                <Box
+                  sx={{
+                    mb: 3,
+                    p: 2,
+                    border: "1px solid",
+                    borderColor: "divider",
+                    borderRadius: 1,
+                    backgroundColor: "background.paper",
+                  }}
+                >
+                  <Typography
+                    variant="subtitle2"
+                    sx={{ mb: 1, fontWeight: "medium" }}
+                  >
+                    {t("personalInfo.passwordMustContain")}:
+                  </Typography>
+
+                  <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
+                    <Box
+                      sx={{
+                        width: 20,
+                        height: 20,
+                        borderRadius: "50%",
+                        backgroundColor: passwordRequirements.length
+                          ? "success.main"
+                          : "grey.300",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        mr: 1.5,
+                      }}
+                    >
+                      {passwordRequirements.length ? (
+                        <CheckIcon
+                          sx={{ fontSize: 14, color: "common.white" }}
+                        />
+                      ) : (
+                        <CloseIcon
+                          sx={{ fontSize: 14, color: "common.white" }}
+                        />
+                      )}
+                    </Box>
+                    <Typography variant="body2">
+                      {t("personalInfo.minLength")}
+                    </Typography>
+                  </Box>
+
+                  <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
+                    <Box
+                      sx={{
+                        width: 20,
+                        height: 20,
+                        borderRadius: "50%",
+                        backgroundColor: passwordRequirements.uppercase
+                          ? "success.main"
+                          : "grey.300",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        mr: 1.5,
+                      }}
+                    >
+                      {passwordRequirements.uppercase ? (
+                        <CheckIcon
+                          sx={{ fontSize: 14, color: "common.white" }}
+                        />
+                      ) : (
+                        <CloseIcon
+                          sx={{ fontSize: 14, color: "common.white" }}
+                        />
+                      )}
+                    </Box>
+                    <Typography variant="body2">
+                      {t("personalInfo.uppercaseLetter")}
+                    </Typography>
+                  </Box>
+
+                  <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
+                    <Box
+                      sx={{
+                        width: 20,
+                        height: 20,
+                        borderRadius: "50%",
+                        backgroundColor: passwordRequirements.number
+                          ? "success.main"
+                          : "grey.300",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        mr: 1.5,
+                      }}
+                    >
+                      {passwordRequirements.number ? (
+                        <CheckIcon
+                          sx={{ fontSize: 14, color: "common.white" }}
+                        />
+                      ) : (
+                        <CloseIcon
+                          sx={{ fontSize: 14, color: "common.white" }}
+                        />
+                      )}
+                    </Box>
+                    <Typography variant="body2">
+                      {t("personalInfo.number")}
+                    </Typography>
+                  </Box>
+
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <Box
+                      sx={{
+                        width: 20,
+                        height: 20,
+                        borderRadius: "50%",
+                        backgroundColor: passwordRequirements.specialChar
+                          ? "success.main"
+                          : "grey.300",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        mr: 1.5,
+                      }}
+                    >
+                      {passwordRequirements.specialChar ? (
+                        <CheckIcon
+                          sx={{ fontSize: 14, color: "common.white" }}
+                        />
+                      ) : (
+                        <CloseIcon
+                          sx={{ fontSize: 14, color: "common.white" }}
+                        />
+                      )}
+                    </Box>
+                    <Typography variant="body2">
+                      {t("personalInfo.specialCharacter")}
+                    </Typography>
+                  </Box>
+                </Box>
+              )}
 
               <TextField
                 fullWidth
@@ -283,6 +477,13 @@ const PersonalInfo = ({ onNext }) => {
                 {t("common.next")}
               </Button>
             </Box>
+
+            <RegistrationSuccessModal
+              open={showSuccessModal}
+              onClose={() => setShowSuccessModal(false)}
+              message={t("register.successMessage")}
+              contactMessage={t("register.contactMessage")}
+            />
 
             {/* Language Selector */}
             <Stack direction="row" spacing={2} justifyContent="center" mt={2}>

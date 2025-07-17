@@ -39,15 +39,12 @@ const BasicInfo = ({ onNext }) => {
     <Grid container sx={{ minHeight: "100vh" }}>
       {/* Left side - placeholder for images/info */}
       <Grid
-        item
-        xs={12}
-        md={7}
         sx={{
           background: "linear-gradient(135deg, #FFA726, #FB8C00)",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          height: "100vh", // Prend toute la hauteur
+          height: "100vh", 
         }}
       >
         <Box sx={{ p: 4, textAlign: "center" }}>
@@ -61,9 +58,6 @@ const BasicInfo = ({ onNext }) => {
       </Grid>
 
       <Grid
-        tem
-        xs={12}
-        md={5}
         sx={{
           display: "flex",
           justifyContent: "flex-start", // décalage vers la droite

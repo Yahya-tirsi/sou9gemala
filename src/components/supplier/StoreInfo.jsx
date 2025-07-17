@@ -20,7 +20,7 @@ import { orange } from "@mui/material/colors";
 import SharedLayout from "../../shared/SharedLayout";
 import RegistrationSuccessModal from "./RegistrationSuccessModal";
 
-const StoreInfo = ({ onSubmit }) => {
+const StoreInfo = () => {
   const { t, i18n } = useTranslation();
   const [storeName, setStoreName] = useState("");
   const [termsAccepted, setTermsAccepted] = useState(false);
@@ -41,8 +41,8 @@ const StoreInfo = ({ onSubmit }) => {
     }
 
     setError(null);
-    setShowSuccessModal(true);
-    onSubmit(storeName);
+    // setShowSuccessModal(true);
+    // onSubmit(storeName);
   };
 
   return (
