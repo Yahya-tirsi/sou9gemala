@@ -5,7 +5,13 @@ const register = async (supplierData) => {
     const response = await supplierApi.register(supplierData);
     return response;
   } catch (error) {
-    throw new Error(error.message || "Failed to register supplier");
+    // Transform the backend error into a standardized format
+    if (error.response?.data?.DuplicatePhoneNumber) {
+      const err = new Error(error.response.data.DuplicatePhoneNumber[0]);
+      err.type = "DUPLICATE_PHONE";
+      throw err;
+    }
+    throw error;
   }
 };
 
@@ -21,6 +27,15 @@ const login = async (credentials) => {
 const forgotPassword = async (email) => {
   try {
     const response = await supplierApi.forgotPassword(email);
+    return response;
+  } catch (error) {
+    throw new Error(error.message || "Password reset request failed");
+  }
+};
+
+const resetPassword = async (email, token, newPassword) => {
+  try {
+    const response = await supplierApi.resetPassword(email, token, newPassword);
     return response;
   } catch (error) {
     throw new Error(error.message || "Password reset request failed");
@@ -60,7 +75,8 @@ const supplierService = {
   sendVerificationCode,
   checkEmailExists,
   login,
-  forgotPassword
+  forgotPassword,
+  resetPassword
 };
 
 export default supplierService;

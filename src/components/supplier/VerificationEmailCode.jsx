@@ -82,9 +82,6 @@ const VerificationEmailCode = ({ email, onVerificationComplete, onBack }) => {
     <Grid container sx={{ minHeight: "100vh" }}>
       {/* Left side - placeholder for images/info */}
       <Grid
-        item
-        xs={12}
-        md={7}
         sx={{
           background: "linear-gradient(135deg, #FFA726, #FB8C00)",
           display: "flex",
@@ -104,9 +101,6 @@ const VerificationEmailCode = ({ email, onVerificationComplete, onBack }) => {
       </Grid>
 
       <Grid
-        tem
-        xs={12}
-        md={5}
         sx={{
           display: "flex",
           justifyContent: "flex-start", // décalage vers la droite

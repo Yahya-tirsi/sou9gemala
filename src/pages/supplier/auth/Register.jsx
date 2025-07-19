@@ -19,6 +19,7 @@ const SupplierRegister = () => {
     password: "",
   });
   const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const [apiError, setApiError] = useState(null); 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -41,23 +42,27 @@ const SupplierRegister = () => {
 
   const handlePersonalInfoSubmit = async (data) => {
     try {
+      setApiError(null);
+
       const resultAction = await dispatch(
         registerSupplier({
+          ...formData,
           phoneNumber: data.phoneNumber,
           password: data.password,
         })
       );
 
-      if (registerSupplier.fulfilled.match(resultAction)) {
-        // setShowSuccessModal(true);
+      if (resultAction.payload.message === "Phone number already in use") {
+        const error = resultAction.payload.message;
+        setApiError(error);
+        throw error;
       }
+      setSuccessModalOpen(true);
     } catch (error) {
       console.error("Registration failed:", error);
     }
-    // nextStep();
   };
 
-  // const handleStoreInfoSubmit = async () => {};
 
   const handleEmailVerified = (emailData) => {
     setFormData((prev) => ({ ...prev, email: emailData.email }));
@@ -91,7 +96,12 @@ const SupplierRegister = () => {
     case 4:
       return (
         <>
-          <PersonalInfo onNext={handlePersonalInfoSubmit} onBack={prevStep} />
+          <PersonalInfo
+            onNext={handlePersonalInfoSubmit}
+            onBack={prevStep}
+            apiError={apiError}
+            clearError={() => setApiError(null)}
+          />
           <RegistrationSuccessModal
             open={successModalOpen}
             onClose={handleModalClose}

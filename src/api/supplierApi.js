@@ -20,9 +20,25 @@ const supplierApi = {
         body: JSON.stringify(supplierData),
       });
 
-      return await handleResponse(response);
+      const data = await response.json();
+
+      if (!response.ok) {
+        // Create structured error with backend response
+        const error = new Error(data.message || "Registration failed");
+        error.response = {
+          data,
+          status: response.status,
+        };
+        throw error;
+      }
+
+      return data;
     } catch (error) {
-      throw new Error(error.message || "Failed to register supplier");
+      // Ensure consistent error structure
+      if (!error.response) {
+        error.response = { data: { message: error.message } };
+      }
+      throw error;
     }
   },
 
@@ -58,16 +74,35 @@ const supplierApi = {
     }
   },
 
-  // Verify email
-  verifyEmail: async (email, code) => {
+  // Forget password supplier
+  resetPassword: async (email, token, newPassword) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/auth/confirm-verification`, {
+      const response = await fetch(`${API_BASE_URL}/auth/reset-password`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, code }),
+        body: JSON.stringify({ email, token, newPassword }),
       });
+      return await handleResponse(response);
+    } catch (error) {
+      throw new Error(error.message || "Password reset request failed");
+    }
+  },
+
+  // Verify email
+  verifyEmail: async (email, code) => {
+    try {
+      const response = await fetch(
+        `${API_BASE_URL}/auth/confirm-verification`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, code }),
+        }
+      );
       return await handleResponse(response);
     } catch (error) {
       throw new Error(error.message || "Failed to verify email");

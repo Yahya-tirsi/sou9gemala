@@ -61,7 +61,7 @@
     "title": "Personal Information",
     "subtitle": "Set up your password and provide your phone number",
     "phoneLabel": "Phone Number",
-    "phoneNumberExists": "Phone number exists",
+    "phoneNumberExists": "Phone number already exists",
     "invalidPhoneNumber": "Invalid phone number",
     "passwordLabel": "Password",
     "confirmPasswordLabel": "Confirm Password",

@@ -1,5 +1,4 @@
 import { useState } from "react";
-// import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import {
   Box,
@@ -13,11 +12,11 @@ import {
   Grid,
 } from "@mui/material";
 import { orange } from "@mui/material/colors";
+import { Link as RouterLink } from "react-router-dom";
 import SharedLayout from "../../shared/SharedLayout";
 
 const BasicInfo = ({ onNext }) => {
   const { t, i18n } = useTranslation();
-  // const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -60,10 +59,10 @@ const BasicInfo = ({ onNext }) => {
       <Grid
         sx={{
           display: "flex",
-          justifyContent: "flex-start", // décalage vers la droite
+          justifyContent: "flex-start", 
           marginLeft: { xs: "0", md: "3.5rem" },
           alignItems: "center",
-          px: { xs: 2, md: 6 }, // plus d’espace à droite sur desktop
+          px: { xs: 2, md: 6 }, 
           backgroundColor: "background.default",
         }}
       >
@@ -194,7 +193,7 @@ const BasicInfo = ({ onNext }) => {
 
               <Typography variant="body2" textAlign="center">
                 {t("register.alreadyHaveAccount")}{" "}
-                <Link href="/login" color={orange[700]}>
+                <Link component={RouterLink} to="/supplier/login" color={orange[700]}>
                   {t("common.signIn")}
                 </Link>
               </Typography>

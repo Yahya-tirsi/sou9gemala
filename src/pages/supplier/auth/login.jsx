@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../../features/supplier/supplierSlice";
+import { Link as RouterLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import {
   Box,
@@ -16,20 +17,24 @@ import {
   Grid,
   Alert,
   CircularProgress,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
 import { orange } from "@mui/material/colors";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
-const SupplierLogin = ({ onForgotPassword }) => {
+const SupplierLogin = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isLoading, isError, message } = useSelector(
-    (state) => state.supplier
-  );
+  const [showPassword, setShowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const { isLoading } = useSelector((state) => state.supplier);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    // rememberMe: false,
   });
+
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
 
   const handleChange = (e) => {
     const { name, value, checked } = e.target;
@@ -41,58 +46,76 @@ const SupplierLogin = ({ onForgotPassword }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
+    setErrorMessage("");
+
     dispatch(login(formData))
       .unwrap()
-      .then(() => navigate("supplier/dashboard"))
-      .catch(() => {});
+      .then((response) => {
+        localStorage.setItem("supplierToken", response.token);
+        navigate("/supplier/dashboard");
+      })
+      .catch((error) => {
+        if (error.includes("Email") || error.includes("email")) {
+          setErrorMessage("Email incorrect");
+        } else if (error.includes("Password") || error.includes("password")) {
+          setErrorMessage("Mot de passe incorrect");
+        } else {
+          setErrorMessage("Email ou mot de passe incorrect");
+        }
+      });
   };
 
   return (
     <Grid container sx={{ minHeight: "100vh" }}>
-      {/* Left Banner */}
+      {/* Left side - placeholder for images/info */}
       <Grid
-        item
-        xs={false}
-        md={7}
         sx={{
           background: "linear-gradient(135deg, #FFA726, #FB8C00)",
-          display: { xs: "none", md: "flex" },
+          display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          height: "100vh",
         }}
       >
-        <Box sx={{ p: 4, textAlign: "center", color: "white" }}>
-          <Typography variant="h3" gutterBottom fontWeight="bold">
-            Vendor Portal
+        <Box sx={{ p: 4, textAlign: "center" }}>
+          <Typography variant="h3" gutterBottom>
+            Welcome to Our Platform
           </Typography>
-          <Typography variant="h6">
-            Streamline your supplier operations with our platform
+          <Typography variant="body1">
+            Join thousands of happy suppliers growing their business with us
           </Typography>
         </Box>
       </Grid>
 
       {/* Right Form */}
       <Grid
-        item
-        xs={12}
-        md={5}
         sx={{
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "flex-start",
+          marginLeft: { xs: "0", md: "3.5rem" },
           alignItems: "center",
-          p: 4,
+          px: { xs: 2, md: 6 },
+          backgroundColor: "background.default",
         }}
       >
-        <Container maxWidth="sm">
+        <Container
+          maxWidth="sm"
+          sx={{
+            bgcolor: "background.paper",
+            p: 4,
+            borderRadius: 2,
+            width: "100%",
+          }}
+        >
           <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
             <Typography variant="h4" align="center" gutterBottom sx={{ mb: 3 }}>
               Vendor Center
             </Typography>
 
-            {isError && (
+            {/* Display error message if exists */}
+            {errorMessage && (
               <Alert severity="error" sx={{ mb: 3 }}>
-                {message || "Login failed. Please check your credentials."}
+                {errorMessage}
               </Alert>
             )}
 
@@ -108,11 +131,26 @@ const SupplierLogin = ({ onForgotPassword }) => {
                 value={formData.email}
                 onChange={handleChange}
                 sx={{
-                  mb: 2,
-                  "& .Mui-focused": {
-                    color: orange[700],
-                    "& .MuiOutlinedInput-notchedOutline": {
+                  marginBottom: "1.3rem",
+                  "& .MuiOutlinedInput-root": {
+                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
                       borderColor: orange[700],
+                      borderWidth: "2px",
+                    },
+                    "&:hover .MuiOutlinedInput-notchedOutline": {
+                      borderColor: orange[500],
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    "&.Mui-focused": {
+                      color: orange[700],
+                    },
+                  },
+                }}
+                InputLabelProps={{
+                  sx: {
+                    "&.Mui-focused": {
+                      color: orange[700],
                     },
                   },
                 }}
@@ -122,7 +160,7 @@ const SupplierLogin = ({ onForgotPassword }) => {
                 fullWidth
                 name="password"
                 label="Mot de passe"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 margin="normal"
                 variant="outlined"
                 required
@@ -130,16 +168,40 @@ const SupplierLogin = ({ onForgotPassword }) => {
                 onChange={handleChange}
                 sx={{
                   mb: 2,
-                  "& .Mui-focused": {
-                    color: orange[700],
-                    "& .MuiOutlinedInput-notchedOutline": {
+                  "& .MuiOutlinedInput-root": {
+                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
                       borderColor: orange[700],
+                      borderWidth: "2px",
+                    },
+                    "&:hover .MuiOutlinedInput-notchedOutline": {
+                      borderColor: orange[500],
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    "&.Mui-focused": {
+                      color: orange[700],
                     },
                   },
                 }}
+                InputLabelProps={{
+                  sx: {
+                    "&.Mui-focused": {
+                      color: orange[700],
+                    },
+                  },
+                }}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton onClick={handleClickShowPassword} edge="end">
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               />
 
-              <FormControlLabel
+              {/* <FormControlLabel
                 control={
                   <Checkbox
                     name="rememberMe"
@@ -149,7 +211,7 @@ const SupplierLogin = ({ onForgotPassword }) => {
                   />
                 }
                 label="Se souvenir de moi"
-              />
+              /> */}
 
               <Button
                 type="submit"
@@ -164,24 +226,39 @@ const SupplierLogin = ({ onForgotPassword }) => {
                   "&:disabled": { bgcolor: orange[300] },
                 }}
                 disabled={isLoading}
-                startIcon={isLoading ? <CircularProgress size={20} /> : null}
               >
-                SE CONNECTER
+                {isLoading ? (
+                  <CircularProgress size={30} sx={{ color: "white" }} />
+                ) : (
+                  "Se connecter"
+                )}
               </Button>
 
               <Divider sx={{ my: 3 }} />
 
-              <Box sx={{ textAlign: "center" }}>
-                <Typography variant="body2" sx={{ fontWeight: "bold", mb: 1 }}>
-                  VOUS NOUS REJOIGNEZ DEPUIS SELLER CENTER?
-                </Typography>
-                <Link href="#" sx={{ fontWeight: "bold", mr: 2 }}>
-                  CLIQUEZ ICI
-                </Link>
+              <Typography variant="body2" textAlign="center">
+                Si tu n'as pas de compte, 
                 <Link
-                  component="button"
-                  onClick={onForgotPassword}
-                  sx={{ fontWeight: "bold" }}
+                  component={RouterLink}
+                  to="/supplier/register"
+                  color={orange[700]}
+                >
+                  S'inscrire
+                </Link>
+              </Typography>
+              <Box sx={{ textAlign: "center", mt: 2 }}>
+                <Link
+                  component={RouterLink}
+                  to="/forgot-password"
+                  sx={{
+                    fontWeight: "bold",
+                    color: "orange",
+                    textDecoration: "none",
+                    "&:hover": {
+                      textDecoration: "underline",
+                      color: "darkorange",
+                    },
+                  }}
                 >
                   MOT DE PASSE OUBLIÉ?
                 </Link>

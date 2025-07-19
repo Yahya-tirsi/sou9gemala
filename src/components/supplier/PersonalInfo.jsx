@@ -10,7 +10,6 @@ import {
   Alert,
   InputAdornment,
   IconButton,
-  Link,
   Divider,
   Grid,
 } from "@mui/material";
@@ -19,9 +18,10 @@ import SharedLayout from "../../shared/SharedLayout";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
+import AlertMessage from "./AlertMessage";
 import RegistrationSuccessModal from "./RegistrationSuccessModal";
 
-const PersonalInfo = ({ onNext }) => {
+const PersonalInfo = ({ onNext, apiError }) => {
   const { t, i18n } = useTranslation();
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
@@ -31,12 +31,18 @@ const PersonalInfo = ({ onNext }) => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [success, setSuccess] = useState("E-mail vérifié avec succès");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [open, setOpen] = useState(false);
   const [passwordRequirements, setPasswordRequirements] = useState({
     length: false,
     uppercase: false,
     number: false,
     specialChar: false,
   });
+  const [alertMessage, setAlertMessage] = useState("");
+
+  const hideAlert = () => {
+    setOpen(false);
+  };
 
   const checkPasswordRequirements = (pwd) => {
     setPasswordRequirements({
@@ -55,6 +61,8 @@ const PersonalInfo = ({ onNext }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSuccess("");
+    setAlertMessage("");
 
     // Check password match
     if (password !== confirmPassword) {
@@ -70,30 +78,27 @@ const PersonalInfo = ({ onNext }) => {
       return;
     }
 
-    if (!phone || phone.length <= 9) {
+    // check phone length
+    if (!phone || phone.length > 10 || phone.length < 9) {
       setError(t("personalInfo.invalidPhoneNumber"));
       return;
     }
 
+    if (apiError === "Phone number already in use") {
+      setAlertMessage(t("personalInfo.phoneNumberExists"));
+      setOpen(true);
+    }
+
     try {
       setError(null);
-      // Assuming onNext is an async API call
       await onNext({ phoneNumber: `+212${phone}`, password });
 
       // If we get here, the request was successful
-      setShowSuccessModal(true);
+      // setShowSuccessModal(true);
     } catch (err) {
       console.error("API Error:", err.response?.data || err.message);
-
-      // Handle specific error cases
-      if (err.response?.data?.DuplicatePhoneNumber) {
-        setError(t("personalInfo.phoneNumberExists"));
-      } else {
-        setError(t("common.unknownError"));
-      }
     }
   };
-
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleClickShowConfirmPassword = () =>
@@ -101,11 +106,10 @@ const PersonalInfo = ({ onNext }) => {
 
   return (
     <Grid container sx={{ minHeight: "100vh" }}>
+      <AlertMessage open={open} message={alertMessage} onClose={hideAlert} />
+
       {/* Left side - placeholder for images/info */}
       <Grid
-        item
-        xs={12}
-        md={7}
         sx={{
           background: "linear-gradient(135deg, #FFA726, #FB8C00)",
           display: "flex",
@@ -125,9 +129,6 @@ const PersonalInfo = ({ onNext }) => {
       </Grid>
 
       <Grid
-        item
-        xs={12}
-        md={5}
         sx={{
           display: "flex",
           justifyContent: "flex-start", // décalage vers la droite
@@ -223,13 +224,18 @@ const PersonalInfo = ({ onNext }) => {
                   ),
                 }}
               />
+              {alertMessage && (
+                <Alert severity="error" sx={{ mb: 3 }}>
+                  {t("personalInfo.phoneNumberExists")}
+                </Alert>
+              )}
 
               <TextField
                 fullWidth
                 label={t("personalInfo.passwordLabel")}
                 type={showPassword ? "text" : "password"}
                 value={password}
-                onChange={handlePasswordChange} // Updated handler
+                onChange={handlePasswordChange}
                 required
                 sx={{
                   mb: 2,

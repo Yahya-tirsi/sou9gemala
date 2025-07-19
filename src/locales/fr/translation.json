@@ -63,7 +63,7 @@
     "phoneLabel": "Numéro de téléphone",
     "passwordLabel": "Mot de passe",
     "confirmPasswordLabel": "Confirmez le mot de passe",
-    "phoneNumberExists": "Le numéro de téléphone existe",
+    "phoneNumberExists": "Le numéro de téléphone deja existe",
     "invalidPhoneNumber": "Numéro de téléphone invalide",
     "nextButton": "SUIVANT",
     "forgotPassword": "Mot de passe oublié ?",
