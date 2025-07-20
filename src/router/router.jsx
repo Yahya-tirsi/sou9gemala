@@ -25,10 +25,6 @@ export const router = createBrowserRouter([
         element: <ForgotPassword />,
       },
       {
-        path: "/verify-otp",
-        element: <VerifyOTP />,
-      },
-      {
         path: "/reset-password",
         element: <ResetPassword />,
       },

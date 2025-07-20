@@ -66,7 +66,7 @@ export const resetPassword = createAsyncThunk(
   "supplier/resetPassword",
   async ({ email, token, newPassword }, thunkAPI) => {
     try {
-      await supplierService.forgotPassword(email, token, newPassword);
+      await supplierService.resetPassword(email, token, newPassword);
       return email;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -218,6 +218,22 @@ const supplierSlice = createSlice({
         state.message = "Password reset instructions sent";
       })
       .addCase(forgotPassword.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+
+      // Reset password process
+      .addCase(resetPassword.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(resetPassword.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.supplier = action.payload;
+      })
+      .addCase(resetPassword.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

@@ -107,7 +107,7 @@ const SupplierLogin = () => {
             width: "100%",
           }}
         >
-          <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
+          <Paper elevation={3} sx={{ p: 4, borderRadius: 2, boxShadow: "0px 0px 0px white" }}>
             <Typography variant="h4" align="center" gutterBottom sx={{ mb: 3 }}>
               Vendor Center
             </Typography>

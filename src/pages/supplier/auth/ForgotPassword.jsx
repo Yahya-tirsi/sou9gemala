@@ -72,10 +72,6 @@ const ForgotPassword = () => {
 
       {/* Left side - placeholder for images/info */}
       <Grid
-        item
-        xs={false}
-        sm={4}
-        md={6}
         sx={{
           background: "linear-gradient(135deg, #FFA726, #FB8C00)",
           display: "flex",
@@ -96,10 +92,6 @@ const ForgotPassword = () => {
 
       {/* Right Form */}
       <Grid
-        item
-        xs={12}
-        sm={8}
-        md={6}
         sx={{
           display: "flex",
           justifyContent: "flex-start",
@@ -118,7 +110,7 @@ const ForgotPassword = () => {
             width: "100%",
           }}
         >
-          <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
+          <Paper elevation={3} sx={{ p: 4, borderRadius: 2, boxShadow: "0px 0px 0px white", }}>
             <Typography variant="h4" align="center" gutterBottom sx={{ mb: 3 }}>
               Mot de passe oublié
             </Typography>
@@ -133,7 +125,7 @@ const ForgotPassword = () => {
               <Box>
                 <Alert severity="success" sx={{ mb: 3 }}>
                   Un email avec un lien de réinitialisation a été envoyé à{" "}
-                  {email}
+                  <b>{email}</b>
                 </Alert>
               </Box>
             ) : (

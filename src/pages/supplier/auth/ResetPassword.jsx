@@ -18,14 +18,27 @@ import {
   Grid,
   Alert,
   CircularProgress,
+  IconButton,
+  InputAdornment,
 } from "@mui/material";
 import { orange } from "@mui/material/colors";
+import { Visibility, VisibilityOff, Check, Close } from "@mui/icons-material";
 
 const ResetPassword = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [passwordRequirements, setPasswordRequirements] = useState({
+    length: false,
+    uppercase: false,
+    number: false,
+    specialChar: false,
+  });
+  const [allRequirementsMet, setAllRequirementsMet] = useState(false);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isLoading } = useSelector((state) => state.supplier);
@@ -34,6 +47,26 @@ const ResetPassword = () => {
   // Get email and token from URL
   const email = searchParams.get("email");
   const token = searchParams.get("token");
+
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleClickShowNewPassword = () => setShowNewPassword(!showNewPassword);
+
+  const checkPasswordRequirements = (pwd) => {
+    const requirements = {
+      length: pwd.length >= 9,
+      uppercase: /[A-Z]/.test(pwd),
+      number: /\d/.test(pwd),
+      specialChar: /[!@#$%^&*(),.?":{}|<>]/.test(pwd),
+    };
+    setPasswordRequirements(requirements);
+    setAllRequirementsMet(Object.values(requirements).every(Boolean));
+  };
+
+  const handlePasswordChange = (e) => {
+    const newPassword = e.target.value;
+    setPassword(newPassword);
+    checkPasswordRequirements(newPassword);
+  };
 
   // Redirect if email or token is missing
   useEffect(() => {
@@ -45,6 +78,11 @@ const ResetPassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+
+    if (!allRequirementsMet) {
+      setError("Le mot de passe ne respecte pas toutes les exigences");
+      return;
+    }
 
     if (password !== confirmPassword) {
       setError("Les mots de passe ne correspondent pas");
@@ -69,10 +107,6 @@ const ResetPassword = () => {
     <Grid container sx={{ minHeight: "100vh" }}>
       {/* Left side - placeholder for images/info */}
       <Grid
-        item
-        xs={false}
-        sm={4}
-        md={6}
         sx={{
           background: "linear-gradient(135deg, #FFA726, #FB8C00)",
           display: "flex",
@@ -93,10 +127,6 @@ const ResetPassword = () => {
 
       {/* Right Form */}
       <Grid
-        item
-        xs={12}
-        sm={8}
-        md={6}
         sx={{
           display: "flex",
           justifyContent: "flex-start",
@@ -115,7 +145,7 @@ const ResetPassword = () => {
             width: "100%",
           }}
         >
-          <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
+          <Paper elevation={3} sx={{ p: 4, borderRadius: 2, boxShadow: "0px 0px 0px white" }}>
             <Typography variant="h4" align="center" gutterBottom sx={{ mb: 3 }}>
               Réinitialiser le mot de passe
             </Typography>
@@ -130,11 +160,11 @@ const ResetPassword = () => {
                 <TextField
                   fullWidth
                   label="Nouveau mot de passe"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   variant="outlined"
                   margin="normal"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={handlePasswordChange}
                   required
                   sx={{
                     marginBottom: "1.3rem",
@@ -160,12 +190,147 @@ const ResetPassword = () => {
                       },
                     },
                   }}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={handleClickShowPassword}
+                          edge="end"
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
                 />
+
+                {/* Password Requirements Checklist */}
+                {password && (
+                  <Box
+                    sx={{
+                      mb: 3,
+                      p: 2,
+                      border: "1px solid",
+                      borderColor: "divider",
+                      borderRadius: 1,
+                      backgroundColor: "background.paper",
+                    }}
+                  >
+                    <Typography
+                      variant="subtitle2"
+                      sx={{ mb: 1, fontWeight: "medium" }}
+                    >
+                      Le mot de passe doit contenir:
+                    </Typography>
+
+                    <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
+                      <Box
+                        sx={{
+                          width: 20,
+                          height: 20,
+                          borderRadius: "50%",
+                          backgroundColor: passwordRequirements.length
+                            ? "success.main"
+                            : "grey.300",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          mr: 1.5,
+                        }}
+                      >
+                        {passwordRequirements.length ? (
+                          <Check sx={{ fontSize: 14, color: "common.white" }} />
+                        ) : (
+                          <Close sx={{ fontSize: 14, color: "common.white" }} />
+                        )}
+                      </Box>
+                      <Typography variant="body2">
+                        Minimum 9 caractères
+                      </Typography>
+                    </Box>
+
+                    <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
+                      <Box
+                        sx={{
+                          width: 20,
+                          height: 20,
+                          borderRadius: "50%",
+                          backgroundColor: passwordRequirements.uppercase
+                            ? "success.main"
+                            : "grey.300",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          mr: 1.5,
+                        }}
+                      >
+                        {passwordRequirements.uppercase ? (
+                          <Check sx={{ fontSize: 14, color: "common.white" }} />
+                        ) : (
+                          <Close sx={{ fontSize: 14, color: "common.white" }} />
+                        )}
+                      </Box>
+                      <Typography variant="body2">
+                        Une lettre majuscule
+                      </Typography>
+                    </Box>
+
+                    <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
+                      <Box
+                        sx={{
+                          width: 20,
+                          height: 20,
+                          borderRadius: "50%",
+                          backgroundColor: passwordRequirements.number
+                            ? "success.main"
+                            : "grey.300",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          mr: 1.5,
+                        }}
+                      >
+                        {passwordRequirements.number ? (
+                          <Check sx={{ fontSize: 14, color: "common.white" }} />
+                        ) : (
+                          <Close sx={{ fontSize: 14, color: "common.white" }} />
+                        )}
+                      </Box>
+                      <Typography variant="body2">Un chiffre</Typography>
+                    </Box>
+
+                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                      <Box
+                        sx={{
+                          width: 20,
+                          height: 20,
+                          borderRadius: "50%",
+                          backgroundColor: passwordRequirements.specialChar
+                            ? "success.main"
+                            : "grey.300",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          mr: 1.5,
+                        }}
+                      >
+                        {passwordRequirements.specialChar ? (
+                          <Check sx={{ fontSize: 14, color: "common.white" }} />
+                        ) : (
+                          <Close sx={{ fontSize: 14, color: "common.white" }} />
+                        )}
+                      </Box>
+                      <Typography variant="body2">
+                        Un caractère spécial (!@#$%^&* etc.)
+                      </Typography>
+                    </Box>
+                  </Box>
+                )}
 
                 <TextField
                   fullWidth
                   label="Confirmer le nouveau mot de passe"
-                  type="password"
+                  type={showNewPassword ? "text" : "password"}
                   variant="outlined"
                   margin="normal"
                   value={confirmPassword}
@@ -187,6 +352,18 @@ const ResetPassword = () => {
                         color: orange[700],
                       },
                     },
+                  }}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={handleClickShowNewPassword}
+                          edge="end"
+                        >
+                          {showNewPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
                   }}
                   InputLabelProps={{
                     sx: {
@@ -215,10 +392,10 @@ const ResetPassword = () => {
                     "&:hover": { bgcolor: orange[800] },
                     "&:disabled": { bgcolor: orange[300] },
                   }}
-                  disabled={isLoading}
+                  disabled={isLoading || !allRequirementsMet}
                 >
                   {isLoading ? (
-                    <CircularProgress size={30} sx={{ color: "white" }} />
+                    <CircularProgress size={24} sx={{ color: "white" }} />
                   ) : (
                     "Réinitialiser le mot de passe"
                   )}

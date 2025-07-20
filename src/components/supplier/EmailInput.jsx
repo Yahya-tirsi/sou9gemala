@@ -14,6 +14,7 @@ import {
 import { orange } from "@mui/material/colors";
 import SharedLayout from "../../shared/SharedLayout";
 import { checkEmailExists } from "../../features/supplier/supplierSlice";
+import ImageSection from "../../shared/ImageSection";
 
 const EmailInput = ({ email: propEmail = "", onVerified, onBack }) => {
   const { t, i18n } = useTranslation();
@@ -46,41 +47,35 @@ const EmailInput = ({ email: propEmail = "", onVerified, onBack }) => {
     <Grid container sx={{ minHeight: "100vh" }}>
       {/* Left side - placeholder for images/info */}
       <Grid
+        item
+        xs={12} // Mobile : prend toute la largeur
+        md={6} // Desktop : prend 6 colonnes sur 12 => 50%
         sx={{
-          background: "linear-gradient(135deg, #FFA726, #FB8C00)",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          height: "100vh", // Prend toute la hauteur
         }}
       >
-        <Box sx={{ p: 4, textAlign: "center" }}>
-          <Typography variant="h3" gutterBottom>
-            Welcome to Our Platform
-          </Typography>
-          <Typography variant="body1">
-            Join thousands of happy suppliers growing their business with us
-          </Typography>
-        </Box>
+        <ImageSection />
       </Grid>
 
       <Grid
+        item
+        xs={12} // Mobile : prend toute la largeur
+        md={6} // Desktop : prend 6 colonnes sur 12 => 50%
         sx={{
           display: "flex",
-          justifyContent: "flex-start", // décalage vers la droite
-          marginLeft: { xs: "0", md: "3.5rem" },
+          justifyContent: "center",
           alignItems: "center",
-          px: { xs: 2, md: 6 }, // plus d’espace à droite sur desktop
           backgroundColor: "background.default",
+          px: { xs: 2, md: 6 },
         }}
       >
         <Container
           maxWidth="sm"
           sx={{
             bgcolor: "background.paper",
-            p: 4,
             borderRadius: 2,
-            width: "100%",
           }}
         >
           <SharedLayout activeStep={1} />
@@ -167,11 +162,11 @@ const EmailInput = ({ email: propEmail = "", onVerified, onBack }) => {
                       "&:hover": {
                         borderColor: `${orange[700]}`,
                         color: `${orange[700]}`,
-                        backgroundColor: "rgba(255, 152, 0, 0.08)", 
+                        backgroundColor: "rgba(255, 152, 0, 0.08)",
                       },
                       "&:active": {
                         borderColor: "orange.800",
-                        backgroundColor: "rgba(255, 152, 0, 0.12)", 
+                        backgroundColor: "rgba(255, 152, 0, 0.12)",
                       },
                     }}
                   >

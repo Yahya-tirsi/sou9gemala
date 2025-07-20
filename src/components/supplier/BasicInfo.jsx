@@ -14,6 +14,7 @@ import {
 import { orange } from "@mui/material/colors";
 import { Link as RouterLink } from "react-router-dom";
 import SharedLayout from "../../shared/SharedLayout";
+import ImageSection from "../../shared/ImageSection";
 
 const BasicInfo = ({ onNext }) => {
   const { t, i18n } = useTranslation();
@@ -35,34 +36,40 @@ const BasicInfo = ({ onNext }) => {
   };
 
   return (
-    <Grid container sx={{ minHeight: "100vh" }}>
-      {/* Left side - placeholder for images/info */}
+    <Grid
+      container
+      sx={{
+        minHeight: "100vh",
+        margin: 0,
+        width: "100%",
+      }}
+    >
       <Grid
+        item
+        xs={12}
+        md={6}
         sx={{
-          background: "linear-gradient(135deg, #FFA726, #FB8C00)",
           display: "flex",
+          flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          height: "100vh", 
+          background: "linear-gradient(135deg, #FFA790, #FB8C00)",
+          color: "#fff",
         }}
       >
-        <Box sx={{ p: 4, textAlign: "center" }}>
-          <Typography variant="h3" gutterBottom>
-            Welcome to Our Platform
-          </Typography>
-          <Typography variant="body1">
-            Join thousands of happy suppliers growing their business with us
-          </Typography>
-        </Box>
+        <ImageSection />
       </Grid>
 
       <Grid
+        item
+        xs={12}
+        md={6}
         sx={{
           display: "flex",
-          justifyContent: "flex-start", 
+          justifyContent: "right",
           marginLeft: { xs: "0", md: "3.5rem" },
           alignItems: "center",
-          px: { xs: 2, md: 6 }, 
+          px: { xs: 2, md: 6 }, // plus d’espace à droite sur desktop
           backgroundColor: "background.default",
         }}
       >
@@ -70,7 +77,6 @@ const BasicInfo = ({ onNext }) => {
           maxWidth="sm"
           sx={{
             bgcolor: "background.paper",
-            p: 4,
             borderRadius: 2,
             width: "100%",
           }}
@@ -193,7 +199,11 @@ const BasicInfo = ({ onNext }) => {
 
               <Typography variant="body2" textAlign="center">
                 {t("register.alreadyHaveAccount")}{" "}
-                <Link component={RouterLink} to="/supplier/login" color={orange[700]}>
+                <Link
+                  component={RouterLink}
+                  to="/supplier/login"
+                  color={orange[700]}
+                >
                   {t("common.signIn")}
                 </Link>
               </Typography>
