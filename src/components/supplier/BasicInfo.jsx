@@ -15,6 +15,7 @@ import { orange } from "@mui/material/colors";
 import { Link as RouterLink } from "react-router-dom";
 import SharedLayout from "../../shared/SharedLayout";
 import ImageSection from "../../shared/ImageSection";
+import "../../App.css";
 
 const BasicInfo = ({ onNext }) => {
   const { t, i18n } = useTranslation();
@@ -36,45 +37,27 @@ const BasicInfo = ({ onNext }) => {
   };
 
   return (
+
+    // Problem replace class to className
     <Grid
       container
+      className="container-auth"
       sx={{
         minHeight: "100vh",
-        margin: 0,
-        width: "100%",
       }}
     >
-      <Grid
-        item
-        xs={12}
-        md={6}
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          background: "linear-gradient(135deg, #FFA790, #FB8C00)",
-          color: "#fff",
-        }}
-      >
-        <ImageSection />
-      </Grid>
+      <ImageSection />
 
       <Grid
-        item
-        xs={12}
-        md={6}
         sx={{
           display: "flex",
           justifyContent: "right",
           marginLeft: { xs: "0", md: "3.5rem" },
           alignItems: "center",
-          px: { xs: 2, md: 6 }, // plus d’espace à droite sur desktop
-          backgroundColor: "background.default",
         }}
+        className="container-child2-auth"
       >
         <Container
-          maxWidth="sm"
           sx={{
             bgcolor: "background.paper",
             borderRadius: 2,

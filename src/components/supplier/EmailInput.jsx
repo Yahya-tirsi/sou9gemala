@@ -44,38 +44,24 @@ const EmailInput = ({ email: propEmail = "", onVerified, onBack }) => {
   };
 
   return (
-    <Grid container sx={{ minHeight: "100vh" }}>
+    <Grid container sx={{ minHeight: "100vh" }} class="container-auth">
       {/* Left side - placeholder for images/info */}
-      <Grid
-        item
-        xs={12} // Mobile : prend toute la largeur
-        md={6} // Desktop : prend 6 colonnes sur 12 => 50%
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <ImageSection />
-      </Grid>
+      <ImageSection />
 
       <Grid
-        item
-        xs={12} // Mobile : prend toute la largeur
-        md={6} // Desktop : prend 6 colonnes sur 12 => 50%
         sx={{
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "right",
+          marginLeft: { xs: "0", md: "3.5rem" },
           alignItems: "center",
-          backgroundColor: "background.default",
-          px: { xs: 2, md: 6 },
         }}
+        class="container-child2-auth"
       >
         <Container
-          maxWidth="sm"
           sx={{
             bgcolor: "background.paper",
             borderRadius: 2,
+            width: "100%",
           }}
         >
           <SharedLayout activeStep={1} />

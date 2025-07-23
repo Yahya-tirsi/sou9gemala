@@ -18,6 +18,7 @@ import {
   sendVerificationCode,
   verifyEmail,
 } from "../../features/supplier/supplierSlice";
+import ImageSection from "../../shared/ImageSection";
 
 const VerificationEmailCode = ({ email, onVerificationComplete, onBack }) => {
   const { t, i18n } = useTranslation();
@@ -79,42 +80,22 @@ const VerificationEmailCode = ({ email, onVerificationComplete, onBack }) => {
   };
 
   return (
-    <Grid container sx={{ minHeight: "100vh" }}>
+    <Grid container sx={{ minHeight: "100vh" }} className="container-auth">
       {/* Left side - placeholder for images/info */}
-      <Grid
-        sx={{
-          background: "linear-gradient(135deg, #FFA726, #FB8C00)",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh", // Prend toute la hauteur
-        }}
-      >
-        <Box sx={{ p: 4, textAlign: "center" }}>
-          <Typography variant="h3" gutterBottom>
-            Welcome to Our Platform
-          </Typography>
-          <Typography variant="body1">
-            Join thousands of happy suppliers growing their business with us
-          </Typography>
-        </Box>
-      </Grid>
+      <ImageSection />
 
       <Grid
         sx={{
           display: "flex",
-          justifyContent: "flex-start", // décalage vers la droite
+          justifyContent: "right",
           marginLeft: { xs: "0", md: "3.5rem" },
           alignItems: "center",
-          px: { xs: 2, md: 6 }, // plus d’espace à droite sur desktop
-          backgroundColor: "background.default",
         }}
+        className="container-child2-auth"
       >
         <Container
-          maxWidth="sm"
           sx={{
             bgcolor: "background.paper",
-            p: 4,
             borderRadius: 2,
             width: "100%",
           }}

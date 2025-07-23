@@ -1,0 +1,23 @@
+body {
+  display: block;
+  place-items: normal;
+}
+
+.container-auth {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.container-child2-auth {
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .container-auth {
+    flex-direction: column;
+  }
+}

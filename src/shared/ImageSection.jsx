@@ -17,27 +17,29 @@ const ImageSection = () => {
   const slides = [
     {
       image: "/src/assets/images/image/Finance app-cuate.svg",
-      title: "Welcome to Our Platform",
+      title: "Faites grandir votre business",
       description:
-        "Join thousands of happy suppliers growing their business with us",
+        "Inscrivez-vous et profitez d’outils puissants pour développer votre activité et augmenter vos revenus.",
     },
     {
       image: "/src/assets/images/image/Online wishes list-pana.svg",
-      title: "Feature Highlights",
-      description: "Discover powerful tools to grow your business",
+      title: "Nouveaux clients",
+      description:
+        "Rejoignez des milliers de fournisseurs qui attirent chaque jour de nouveaux clients grâce à notre plateforme.",
     },
     {
       image: "/src/assets/images/image/Online ads-amico.svg",
-      title: "Get Started Today",
-      description: "Sign up now to unlock your supplier dashboard",
+      title: "Votre boutique en ligne",
+      description:
+        "Créez gratuitement votre site web et exposez vos produits à des milliers de nouveaux clients.",
     },
   ];
 
-  // Auto-rotate slides every 3 seconds
+  // Auto-rotate slides every 6 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveSlide((prev) => (prev + 1) % slides.length);
-    }, 3000);
+    }, 6000);
     return () => clearInterval(interval);
   }, [slides.length]);
 
@@ -49,9 +51,15 @@ const ImageSection = () => {
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
+        width: "90%",
         position: "relative",
         overflow: "hidden",
         background: "linear-gradient(135deg, #FFA790, #FB8C00)",
+        "@media (max-width: 768px)": {
+          height: "65vh",
+          margin: "0 0 2rem 0",
+          width: "100%",
+        },
       }}
     >
       <Box
@@ -65,14 +73,22 @@ const ImageSection = () => {
           gap: 3,
           width: "100%",
           height: "100%",
+          "@media (max-width: 768px)": {
+            gap: 2, // Réduit l’espace entre les éléments
+            p: 2, // Réduit le padding
+          },
         }}
       >
         {/* Animated Image */}
         <Box
           sx={{
-            width: 250,
-            height: 250,
+            width: 350,
+            height: 350,
             position: "relative",
+            "@media (max-width: 768px)": {
+              width: 250,
+              height: 250,
+            },
           }}
         >
           {slides.map((slide, index) => (
@@ -111,7 +127,7 @@ const ImageSection = () => {
         {/* Text Container with Fixed Height */}
         <Box
           sx={{
-            height: 120,
+            height: 130,
             width: "100%",
             display: "flex",
             flexDirection: "column",
@@ -137,7 +153,9 @@ const ImageSection = () => {
                 opacity: activeSlide === index ? 1 : 0,
                 transition: "opacity 0.5s ease",
                 textAlign: "center",
-                px: 2,
+                "@media (max-width: 768px)": {
+                  padding: "1rem 0",
+                },
               }}
             >
               <Typography
@@ -147,6 +165,9 @@ const ImageSection = () => {
                   color: "common.white",
                   textShadow: "0 2px 4px rgba(0,0,0,0.2)",
                   fontWeight: 600,
+                  "@media (max-width: 768px)": {
+                    fontSize: "29px",
+                  },
                 }}
               >
                 {slide.title}
@@ -170,6 +191,9 @@ const ImageSection = () => {
             display: "flex",
             gap: 2,
             mt: 2,
+            "@media (max-width: 768px)": {
+              mt: 8,
+            },
           }}
         >
           {slides.map((_, index) => (
