@@ -22,6 +22,7 @@ import {
 } from "@mui/material";
 import { orange } from "@mui/material/colors";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import ImageSection from "../../../shared/ImageSection";
 
 const SupplierLogin = () => {
   const dispatch = useDispatch();
@@ -66,48 +67,51 @@ const SupplierLogin = () => {
   };
 
   return (
-    <Grid container sx={{ minHeight: "100vh" }}>
+    <Grid
+      sx={{
+        minHeight: "100vh",
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        boxSizing: "border-box",
+        "@media (max-width: 768px)": {
+          flexDirection: "column",
+        },
+      }}
+    >
       {/* Left side - placeholder for images/info */}
-      <Grid
-        sx={{
-          background: "linear-gradient(135deg, #FFA726, #FB8C00)",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-        }}
-      >
-        <Box sx={{ p: 4, textAlign: "center" }}>
-          <Typography variant="h3" gutterBottom>
-            Welcome to Our Platform
-          </Typography>
-          <Typography variant="body1">
-            Join thousands of happy suppliers growing their business with us
-          </Typography>
-        </Box>
-      </Grid>
+      <ImageSection />
 
       {/* Right Form */}
       <Grid
         sx={{
           display: "flex",
-          justifyContent: "flex-start",
-          marginLeft: { xs: "0", md: "3.5rem" },
+          justifyContent: "right",
+          marginLeft: { xs: "0" },
           alignItems: "center",
-          px: { xs: 2, md: 6 },
-          backgroundColor: "background.default",
+          width: "100%",
         }}
       >
         <Container
-          maxWidth="sm"
           sx={{
             bgcolor: "background.paper",
-            p: 4,
             borderRadius: 2,
             width: "100%",
           }}
         >
-          <Paper elevation={3} sx={{ p: 4, borderRadius: 2, boxShadow: "0px 0px 0px white" }}>
+          <Box
+            sx={{
+              bgcolor: "background.paper",
+              borderRadius: 2,
+              "@media (min-width: 951px)": {
+                p: 4,
+              },
+              "@media (max-width: 768px)": {
+                marginBottom: "2.5rem",
+              },
+            }}
+          >
             <Typography variant="h4" align="center" gutterBottom sx={{ mb: 3 }}>
               Vendor Center
             </Typography>
@@ -237,7 +241,7 @@ const SupplierLogin = () => {
               <Divider sx={{ my: 3 }} />
 
               <Typography variant="body2" textAlign="center">
-                Si tu n'as pas de compte, 
+                Si tu n'as pas de compte,
                 <Link
                   component={RouterLink}
                   to="/supplier/register"
@@ -264,7 +268,7 @@ const SupplierLogin = () => {
                 </Link>
               </Box>
             </Box>
-          </Paper>
+          </Box>
         </Container>
       </Grid>
     </Grid>

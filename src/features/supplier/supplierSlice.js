@@ -22,8 +22,6 @@ export const registerSupplier = createAsyncThunk(
       return response;
     } catch (error) {
       if (error.response?.data?.DuplicatePhoneNumber) {
-        console.log(error);
-
         return thunkAPI.rejectWithValue({
           message: error.response.data.DuplicatePhoneNumber[0],
           type: "DUPLICATE_PHONE",
@@ -43,6 +41,22 @@ export const login = createAsyncThunk(
   async (credentials, thunkAPI) => {
     try {
       const response = await supplierService.login(credentials);
+      return response;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+// supplierSlice
+export const registerSupplierStoreInfo = createAsyncThunk(
+  "supplier/registerSupplierStoreInfo",
+  async ({ sellerId, storeData }, thunkAPI) => {
+    try {
+      const response = await supplierService.registerSupplierStoreInfo(
+        sellerId,
+        storeData
+      );
       return response;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -133,7 +147,7 @@ const supplierSlice = createSlice({
     },
     setVerificationSent: (state, action) => {
       state.isVerificationSent = action.payload;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder

@@ -58,6 +58,29 @@ const supplierApi = {
     }
   },
 
+  // Supplier store information
+  registerSupplierStoreInfo: async (sellerId, storeData) => {
+    try {
+      if (!sellerId) {
+        throw new Error("Seller ID is required");
+      }
+
+      const response = await fetch(
+        `${API_BASE_URL}/sellers/${sellerId}/stores`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(storeData),
+        }
+      );
+      return await handleResponse(response);
+    } catch (error) {
+      throw new Error(error.message || "Failed store information");
+    }
+  },
+
   // Forget password supplier
   forgotPassword: async (email) => {
     try {

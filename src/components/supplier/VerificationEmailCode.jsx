@@ -40,7 +40,7 @@ const VerificationEmailCode = ({ email, onVerificationComplete, onBack }) => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [email, dispatch]);
+  }, []);
 
   const handleSendVerificationCode = async () => {
     setResendLoading(true);
@@ -80,7 +80,19 @@ const VerificationEmailCode = ({ email, onVerificationComplete, onBack }) => {
   };
 
   return (
-    <Grid container sx={{ minHeight: "100vh" }} className="container-auth">
+    <Grid
+      sx={{
+        minHeight: "100vh",
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        boxSizing: "border-box",
+        "@media (max-width: 768px)": {
+          flexDirection: "column",
+        },
+      }}
+    >
       {/* Left side - placeholder for images/info */}
       <ImageSection />
 
@@ -88,10 +100,10 @@ const VerificationEmailCode = ({ email, onVerificationComplete, onBack }) => {
         sx={{
           display: "flex",
           justifyContent: "right",
-          marginLeft: { xs: "0", md: "3.5rem" },
+          marginLeft: { xs: "0" },
           alignItems: "center",
+          width: "100%",
         }}
-        className="container-child2-auth"
       >
         <Container
           sx={{
@@ -128,8 +140,10 @@ const VerificationEmailCode = ({ email, onVerificationComplete, onBack }) => {
           <Box
             sx={{
               bgcolor: "background.paper",
-              p: 4,
               borderRadius: 2,
+              "@media (min-width: 951px)": {
+                p: 4,
+              },
             }}
           >
             {error && (

@@ -24,6 +24,15 @@ const login = async (credentials) => {
   }
 };
 
+const registerSupplierStoreInfo = async (credentials) => {
+  try {
+    const response = await supplierApi.registerSupplierStoreInfo(credentials);
+    return response;
+  } catch (error) {
+    throw new Error(error.message || "Login failed");
+  }
+};
+
 const forgotPassword = async (email) => {
   try {
     const response = await supplierApi.forgotPassword(email);
@@ -76,7 +85,8 @@ const supplierService = {
   checkEmailExists,
   login,
   forgotPassword,
-  resetPassword
+  resetPassword,
+  registerSupplierStoreInfo
 };
 
 export default supplierService;

@@ -31,7 +31,6 @@ const PersonalInfo = ({ onNext, apiError }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [success, setSuccess] = useState("E-mail vérifié avec succès");
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [open, setOpen] = useState(false);
   const [passwordRequirements, setPasswordRequirements] = useState({
     length: false,
@@ -59,6 +58,9 @@ const PersonalInfo = ({ onNext, apiError }) => {
     setPassword(pwd);
     checkPasswordRequirements(pwd);
   };
+
+
+  // So i have problem in next step in the personal information 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -92,10 +94,14 @@ const PersonalInfo = ({ onNext, apiError }) => {
 
     try {
       setError(null);
-      await onNext({ phoneNumber: `+212${phone}`, password });
+      const response = await onNext({ phoneNumber: `${phone}`, password });
+      console.log("SellerId in PersonalInfo : ", response);
 
-      // If we get here, the request was successful
-      // setShowSuccessModal(true);
+      if (response.sellerId) {
+        localStorage.setItem("sellerId", response.sellerId);
+      } else {
+        console.warn("No sellerrid in response:", response);
+      }
     } catch (err) {
       console.error("API Error:", err.response?.data || err.message);
     }
@@ -107,11 +113,17 @@ const PersonalInfo = ({ onNext, apiError }) => {
 
   return (
     <Grid
-      container
       sx={{
         minHeight: "100vh",
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        boxSizing: "border-box",
+        "@media (max-width: 768px)": {
+          flexDirection: "column",
+        },
       }}
-      className="container-auth"
     >
       <AlertMessage open={open} message={alertMessage} onClose={hideAlert} />
 
@@ -122,10 +134,10 @@ const PersonalInfo = ({ onNext, apiError }) => {
         sx={{
           display: "flex",
           justifyContent: "right",
-          marginLeft: { xs: "0", md: "3.5rem" },
+          marginLeft: { xs: "0" },
           alignItems: "center",
+          width: "100%",
         }}
-        className="container-child2-auth"
       >
         <Container
           sx={{
@@ -159,8 +171,10 @@ const PersonalInfo = ({ onNext, apiError }) => {
           <Box
             sx={{
               bgcolor: "background.paper",
-              p: 4,
               borderRadius: 2,
+              "@media (min-width: 951px)": {
+                p: 4,
+              },
             }}
           >
             {success && (
@@ -470,13 +484,6 @@ const PersonalInfo = ({ onNext, apiError }) => {
                 {t("common.next")}
               </Button>
             </Box>
-
-            <RegistrationSuccessModal
-              open={showSuccessModal}
-              onClose={() => setShowSuccessModal(false)}
-              message={t("register.successMessage")}
-              contactMessage={t("register.contactMessage")}
-            />
 
             {/* Language Selector */}
             <Stack direction="row" spacing={2} justifyContent="center" mt={2}>

@@ -28,6 +28,7 @@
     "storeInfo": "Informations de votre boutique",
     "setupStoreDetails": "Configurez votre boutique en fournissant les détails suivants",
     "storeName": "Nom de la boutique",
+    "adresse": "Votre adresse",
     "storeNameRequired": "Veuillez entrer un nom pour votre boutique",
     "accountType": "Type de compte",
     "individual": "Individuel",

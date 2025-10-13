@@ -19,10 +19,12 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { orange } from "@mui/material/colors";
 import SharedLayout from "../../shared/SharedLayout";
 import RegistrationSuccessModal from "./RegistrationSuccessModal";
+import ImageSection from "../../shared/ImageSection";
 
-const StoreInfo = () => {
+const StoreInfo = ({ onSubmit }) => {
   const { t, i18n } = useTranslation();
   const [storeName, setStoreName] = useState("");
+  const [adresse, setAdresse] = useState("");
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [error, setError] = useState(null);
@@ -35,59 +37,49 @@ const StoreInfo = () => {
       return;
     }
 
+    if (!adresse.trim()) {
+      setError(t("register.addressRequired")); 
+      return;
+    }
+
     if (!termsAccepted) {
       setError(t("register.acceptTermsError"));
       return;
     }
 
     setError(null);
-    // setShowSuccessModal(true);
-    // onSubmit(storeName);
+    onSubmit({ storeName, adresse });
   };
 
   return (
-    <Grid container sx={{ minHeight: "100vh" }}>
+    <Grid
+      sx={{
+        minHeight: "100vh",
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        boxSizing: "border-box",
+        "@media (max-width: 768px)": {
+          flexDirection: "column",
+        },
+      }}
+    >
       {/* Left side - placeholder for images/info */}
-      <Grid
-        item
-        xs={12}
-        md={7}
-        sx={{
-          background: "linear-gradient(135deg, #FFA726, #FB8C00)",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh", // Prend toute la hauteur
-        }}
-      >
-        <Box sx={{ p: 4, textAlign: "center" }}>
-          <Typography variant="h3" gutterBottom>
-            Welcome to Our Platform
-          </Typography>
-          <Typography variant="body1">
-            Join thousands of happy suppliers growing their business with us
-          </Typography>
-        </Box>
-      </Grid>
+      <ImageSection />
 
       <Grid
-        item
-        xs={12}
-        md={5}
         sx={{
           display: "flex",
-          justifyContent: "flex-start", // décalage vers la droite
-          marginLeft: { xs: "0", md: "3.5rem" },
+          justifyContent: "right",
+          marginLeft: { xs: "0" },
           alignItems: "center",
-          px: { xs: 2, md: 6 }, // plus d’espace à droite sur desktop
-          backgroundColor: "background.default",
+          width: "100%",
         }}
       >
         <Container
-          maxWidth="sm"
           sx={{
             bgcolor: "background.paper",
-            p: 4,
             borderRadius: 2,
             width: "100%",
           }}
@@ -118,158 +110,193 @@ const StoreInfo = () => {
           </Typography>
 
           <Box
-            component="form"
-            onSubmit={handleSubmit}
             sx={{
               bgcolor: "background.paper",
-              p: 4,
               borderRadius: 2,
-              textAlign: i18n.language === "ar" ? "right" : "left",
+              "@media (min-width: 951px)": {
+                p: 4,
+              },
             }}
           >
-            {error && (
-              <Alert severity="error" sx={{ mb: 3 }}>
-                {error}
-              </Alert>
-            )}
+            <Box component="form" onSubmit={handleSubmit}>
+              {error && (
+                <Alert severity="error" sx={{ mb: 3 }}>
+                  {error}
+                </Alert>
+              )}
 
-            <Box sx={{ mb: 3 }}>
-              <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-                <TextField
-                  required
-                  fullWidth
-                  name="storeName"
-                  label={t("register.storeName")}
-                  value={storeName}
-                  onChange={(e) => setStoreName(e.target.value)}
-                  variant="outlined"
-                  sx={{
-                    "& .MuiOutlinedInput-root": {
-                      "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                        borderColor: orange[700],
-                        borderWidth: "2px",
-                      },
-                      "&:hover .MuiOutlinedInput-notchedOutline": {
-                        borderColor: orange[500],
-                      },
-                    },
-                    "& .MuiInputLabel-root": {
-                      "&.Mui-focused": {
-                        color: orange[700],
-                      },
-                    },
-                  }}
-                  InputLabelProps={{
-                    sx: {
-                      "&.Mui-focused": {
-                        color: orange[700],
-                      },
-                    },
-                  }}
-                  inputProps={{ dir: i18n.language === "ar" ? "rtl" : "ltr" }}
-                />
-
-                <Tooltip
-                  title={t("register.storeNameDescription")}
-                  arrow
-                  placement="top"
-                >
-                  <IconButton
-                    size="medium"
+              <Box sx={{ mb: 3 }}>
+                <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+                  <TextField
+                    required
+                    fullWidth
+                    name="storeName"
+                    label={t("register.storeName")}
+                    value={storeName}
+                    onChange={(e) => setStoreName(e.target.value)}
+                    variant="outlined"
                     sx={{
-                      color: orange[700],
-                      backgroundColor: orange[50],
-                      "&:hover": {
-                        backgroundColor: orange[100],
+                      "& .MuiOutlinedInput-root": {
+                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                          borderColor: orange[700],
+                          borderWidth: "2px",
+                        },
+                        "&:hover .MuiOutlinedInput-notchedOutline": {
+                          borderColor: orange[500],
+                        },
                       },
-                      p: 1.5,
-                      ml: 1,
+                      "& .MuiInputLabel-root": {
+                        "&.Mui-focused": {
+                          color: orange[700],
+                        },
+                      },
                     }}
+                    InputLabelProps={{
+                      sx: {
+                        "&.Mui-focused": {
+                          color: orange[700],
+                        },
+                      },
+                    }}
+                    inputProps={{ dir: i18n.language === "ar" ? "rtl" : "ltr" }}
+                  />
+
+                  <TextField
+                    required
+                    fullWidth
+                    name="adresse"
+                    label={t("register.adresse")}
+                    value={adresse}
+                    onChange={(e) => setAdresse(e.target.value)}
+                    variant="outlined"
+                    sx={{
+                      "& .MuiOutlinedInput-root": {
+                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                          borderColor: orange[700],
+                          borderWidth: "2px",
+                        },
+                        "&:hover .MuiOutlinedInput-notchedOutline": {
+                          borderColor: orange[500],
+                        },
+                      },
+                      "& .MuiInputLabel-root": {
+                        "&.Mui-focused": {
+                          color: orange[700],
+                        },
+                      },
+                    }}
+                    InputLabelProps={{
+                      sx: {
+                        "&.Mui-focused": {
+                          color: orange[700],
+                        },
+                      },
+                    }}
+                    inputProps={{ dir: i18n.language === "ar" ? "rtl" : "ltr" }}
+                  />
+
+                  <Tooltip
+                    title={t("register.storeNameDescription")}
+                    arrow
+                    placement="top"
                   >
-                    <InfoOutlinedIcon fontSize="medium" />
-                  </IconButton>
-                </Tooltip>
+                    <IconButton
+                      size="medium"
+                      sx={{
+                        color: orange[700],
+                        backgroundColor: orange[50],
+                        "&:hover": {
+                          backgroundColor: orange[100],
+                        },
+                        p: 1.5,
+                        ml: 1,
+                      }}
+                    >
+                      <InfoOutlinedIcon fontSize="medium" />
+                    </IconButton>
+                  </Tooltip>
+                </Box>
               </Box>
+
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={termsAccepted}
+                    onChange={(e) => setTermsAccepted(e.target.checked)}
+                    color="primary"
+                  />
+                }
+                label={
+                  <Typography variant="body2">
+                    {t("register.agreeToTerms1")}{" "}
+                    <Link href="#" color={orange[700]}>
+                      {t("register.agreeToTerms2")}
+                    </Link>{" "}
+                    {t("register.agreeToTerms3")}
+                  </Typography>
+                }
+                sx={{ mb: 3, alignItems: "flex-start" }}
+              />
+
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{
+                  py: 1.5,
+                  bgcolor: orange[700],
+                  "&:hover": {
+                    bgcolor: orange[800],
+                  },
+                }}
+              >
+                {t("common.submit")}
+              </Button>
+
+              {/* Language Selector */}
+              <Stack direction="row" spacing={2} justifyContent="center" mt={2}>
+                <Button
+                  size="small"
+                  onClick={() => i18n.changeLanguage("fr")}
+                  color={i18n.language === "fr" ? "primary" : "inherit"}
+                  sx={{
+                    fontWeight: i18n.language === "fr" ? "bold" : "normal",
+                    color: i18n.language === "fr" ? orange[700] : "inherit",
+                  }}
+                >
+                  Français
+                </Button>
+                <Button
+                  size="small"
+                  onClick={() => i18n.changeLanguage("ar")}
+                  color={i18n.language === "ar" ? "primary" : "inherit"}
+                  sx={{
+                    fontWeight: i18n.language === "ar" ? "bold" : "normal",
+                    color: i18n.language === "ar" ? orange[700] : "inherit",
+                  }}
+                >
+                  العربية
+                </Button>
+                <Button
+                  size="small"
+                  onClick={() => i18n.changeLanguage("en")}
+                  color={i18n.language === "en" ? "primary" : "inherit"}
+                  sx={{
+                    fontWeight: i18n.language === "en" ? "bold" : "normal",
+                    color: i18n.language === "en" ? orange[700] : "inherit",
+                  }}
+                >
+                  English
+                </Button>
+              </Stack>
+
+              <RegistrationSuccessModal
+                open={showSuccessModal}
+                onClose={() => setShowSuccessModal(false)}
+                message={t("register.successMessage")}
+                contactMessage={t("register.contactMessage")}
+              />
             </Box>
-
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={termsAccepted}
-                  onChange={(e) => setTermsAccepted(e.target.checked)}
-                  color="primary"
-                />
-              }
-              label={
-                <Typography variant="body2">
-                  {t("register.agreeToTerms1")}{" "}
-                  <Link href="#" color={orange[700]}>
-                    {t("register.agreeToTerms2")}
-                  </Link>{" "}
-                  {t("register.agreeToTerms3")}
-                </Typography>
-              }
-              sx={{ mb: 3, alignItems: "flex-start" }}
-            />
-
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{
-                py: 1.5,
-                bgcolor: orange[700],
-                "&:hover": {
-                  bgcolor: orange[800],
-                },
-              }}
-            >
-              {t("common.submit")}
-            </Button>
-
-            {/* Language Selector */}
-            <Stack direction="row" spacing={2} justifyContent="center" mt={2}>
-              <Button
-                size="small"
-                onClick={() => i18n.changeLanguage("fr")}
-                color={i18n.language === "fr" ? "primary" : "inherit"}
-                sx={{
-                  fontWeight: i18n.language === "fr" ? "bold" : "normal",
-                  color: i18n.language === "fr" ? orange[700] : "inherit",
-                }}
-              >
-                Français
-              </Button>
-              <Button
-                size="small"
-                onClick={() => i18n.changeLanguage("ar")}
-                color={i18n.language === "ar" ? "primary" : "inherit"}
-                sx={{
-                  fontWeight: i18n.language === "ar" ? "bold" : "normal",
-                  color: i18n.language === "ar" ? orange[700] : "inherit",
-                }}
-              >
-                العربية
-              </Button>
-              <Button
-                size="small"
-                onClick={() => i18n.changeLanguage("en")}
-                color={i18n.language === "en" ? "primary" : "inherit"}
-                sx={{
-                  fontWeight: i18n.language === "en" ? "bold" : "normal",
-                  color: i18n.language === "en" ? orange[700] : "inherit",
-                }}
-              >
-                English
-              </Button>
-            </Stack>
-
-            <RegistrationSuccessModal
-              open={showSuccessModal}
-              onClose={() => setShowSuccessModal(false)}
-              message={t("register.successMessage")}
-              contactMessage={t("register.contactMessage")}
-            />
           </Box>
         </Container>
       </Grid>
