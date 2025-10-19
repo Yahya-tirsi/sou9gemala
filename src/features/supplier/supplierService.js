@@ -24,9 +24,9 @@ const login = async (credentials) => {
   }
 };
 
-const registerSupplierStoreInfo = async (credentials) => {
+const registerSupplierStoreInfo = async (sellerId, storeData) => {
   try {
-    const response = await supplierApi.registerSupplierStoreInfo(credentials);
+    const response = await supplierApi.registerSupplierStoreInfo(sellerId, storeData);
     return response;
   } catch (error) {
     throw new Error(error.message || "Login failed");
@@ -86,7 +86,7 @@ const supplierService = {
   login,
   forgotPassword,
   resetPassword,
-  registerSupplierStoreInfo
+  registerSupplierStoreInfo,
 };
 
 export default supplierService;

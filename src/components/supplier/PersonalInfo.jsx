@@ -95,7 +95,6 @@ const PersonalInfo = ({ onNext, apiError }) => {
     try {
       setError(null);
       const response = await onNext({ phoneNumber: `${phone}`, password });
-      console.log("SellerId in PersonalInfo : ", response);
 
       if (response.sellerId) {
         localStorage.setItem("sellerId", response.sellerId);

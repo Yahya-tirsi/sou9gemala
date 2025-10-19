@@ -48,7 +48,6 @@ export const login = createAsyncThunk(
   }
 );
 
-// supplierSlice
 export const registerSupplierStoreInfo = createAsyncThunk(
   "supplier/registerSupplierStoreInfo",
   async ({ sellerId, storeData }, thunkAPI) => {

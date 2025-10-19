@@ -65,12 +65,14 @@ const supplierApi = {
         throw new Error("Seller ID is required");
       }
 
+      console.log(storeData);
+
       const response = await fetch(
         `${API_BASE_URL}/sellers/${sellerId}/stores`,
         {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/json-patch+json",
           },
           body: JSON.stringify(storeData),
         }

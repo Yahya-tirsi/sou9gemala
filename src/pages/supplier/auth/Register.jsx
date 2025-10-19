@@ -84,20 +84,16 @@ const SupplierRegister = () => {
   };
 
   const handleStoreInfo = async (storeInfo) => {
-    console.log("Store info:", storeInfo);
     try {
       setApiError(null);
 
-      // Use the sellerId from state or localStorage
       const currentSellerId = sellerId || localStorage.getItem("sellerId");
-      console.log("SellerId in register :", currentSellerId);
 
       if (!currentSellerId) {
         setApiError("Seller registration incomplete. Please go back.");
         return;
       }
 
-      // In handleStoreInfo function
       const resultAction = await dispatch(
         registerSupplierStoreInfo({
           sellerId: currentSellerId,
@@ -109,9 +105,7 @@ const SupplierRegister = () => {
       );
 
       if (registerSupplierStoreInfo.fulfilled.match(resultAction)) {
-        // Store creation successful - show success modal
         setSuccessModalOpen(true);
-        // Clean up localStorage
         localStorage.removeItem("sellerId");
       } else if (registerSupplierStoreInfo.rejected.match(resultAction)) {
         throw new Error(resultAction.payload || "Store creation failed");
